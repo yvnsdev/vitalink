@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitalink - Apoyo para Profesionales Rurales</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#inicio" class="nav-logo" aria-label="Inicio Vitalink">
+                <picture class="logo-picture">
+                    <img src="assets/favicon.png" alt="" class="logo-img" width="35" height="35">
+                </picture>
+                <span class="brand">Vitalink</span>
+            </a>
+            <button class="nav-toggle" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#beneficios" class="nav-link">Beneficios</a></li>
+                <li><a href="#que-es" class="nav-link">Qué es Vitalink</a></li>
+                <li><a href="#capsulas" class="nav-link">Cápsulas</a></li>
+                <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
+                <li><a href="#faq" class="nav-link">Preguntas Frecuentes</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                <li class="nav-auth">
+                    <button id="auth-btn" class="btn btn-outline">Acceder</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sección Inicio/Hero -->
+    <section id="inicio" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-background">
+            <div class="hero-shape hero-shape-1"></div>
+            <div class="hero-shape hero-shape-2"></div>
+            <div class="hero-shape hero-shape-3"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">Plataforma de Autocuidado</div>
+                <h1 class="hero-title">Cápsulas de Autocuidado para <span class="highlight">Profesionales Rurales</span>
+                </h1>
+                <p class="hero-subtitle">Recursos educativos breves sobre educación física, salud mental y medicina
+                    adaptados a tu realidad rural.</p>
+                <div class="hero-actions">
+                    <a href="#capsulas" class="btn btn-primary btn-large">
+                        <span>Ver Cápsulas</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                    <a href="#que-es" class="btn btn-primary btn-large">Conoce Más</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Profesionales</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">150+</span>
+                        <span class="stat-label">Cápsulas</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">Satisfacción</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Beneficios -->
+    <section id="beneficios" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">¿Por qué Vitalink?</span>
+                <h2 class="section-title">Beneficios para Profesionales Rurales</h2>
+                <p class="section-description">Diseñado específicamente para las necesidades únicas de quienes trabajan
+                    en zonas rurales.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">⏱️</div>
+                    <h3>Cápsulas Breves</h3>
+                    <p>Contenido de 5-15 minutos que se adapta a tu apretada agenda.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📱</div>
+                    <h3>Acceso Sin Conexión</h3>
+                    <p>Descarga los recursos y accede a ellos incluso sin internet.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Enfoque Práctico</h3>
+                    <p>Consejos y técnicas que puedes aplicar inmediatamente.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌱</div>
+                    <h3>Adaptado al Contexto Rural</h3>
+                    <p>Contenido creado considerando las realidades y recursos disponibles.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">👥</div>
+                    <h3>Comunidad de Apoyo</h3>
+                    <p>Conecta con otros profesionales en situaciones similares.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Completamente Gratuito</h3>
+                    <p>Acceso ilimitado sin costos para profesionales rurales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Qué es Vitalink -->
+    <section id="que-es" class="section bg-light">
+        <div class="container">
+            <div class="about-container">
+                <div class="about-content">
+                    <div class="section-header">
+                        <span class="section-subtitle">Nuestra Propuesta</span>
+                        <h2 class="section-title">Qué es Vitalink</h2>
+                    </div>
+                    <div class="about-text">
+                        <h3>Nuestra Misión</h3>
+                        <p>Vitalink es una plataforma diseñada específicamente para apoyar a profesionales que trabajan
+                            en zonas rurales mediante cápsulas cortas de autocuidado en tres áreas fundamentales que
+                            impactan directamente en tu bienestar y capacidad de servicio.</p>
+
+                        <div class="focus-areas">
+                            <div class="focus-item">
+                                <span class="focus-icon">💪</span>
+                                <h4>Educación Física</h4>
+                                <p>Ejercicios y rutinas adaptadas para mantener tu cuerpo activo en espacios limitados,
+                                    sin necesidad de equipamiento especializado.</p>
+                                <ul class="focus-features">
+                                    <li>Rutinas de 10-15 minutos</li>
+                                    <li>Sin equipamiento necesario</li>
+                                    <li>Ejercicios para espacios reducidos</li>
+                                </ul>
+                            </div>
+                            <div class="focus-item">
+                                <span class="focus-icon">🧠</span>
+                                <h4>Salud Mental</h4>
+                                <p>Técnicas y herramientas para gestionar el estrés, prevenir el burnout y mantener el
+                                    bienestar emocional en entornos desafiantes.</p>
+                                <ul class="focus-features">
+                                    <li>Técnicas de mindfulness</li>
+                                    <li>Gestión del estrés laboral</li>
+                                    <li>Ejercicios de respiración</li>
+                                </ul>
+                            </div>
+                            <div class="focus-item">
+                                <span class="focus-icon">🩺</span>
+                                <h4>Medicina</h4>
+                                <p>Conocimientos médicos prácticos para el autocuidado, prevención de enfermedades y
+                                    atención básica en contextos de recursos limitados.</p>
+                                <ul class="focus-features">
+                                    <li>Primeros auxilios básicos</li>
+                                    <li>Prevención de enfermedades</li>
+                                    <li>Autocuidado médico</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="how-it-works">
+                            <h3>Cómo funciona</h3>
+                            <div class="steps">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h4>Regístrate Gratis</h4>
+                                        <p>Crea tu cuenta en menos de 2 minutos con tu correo electrónico.</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h4>Explora Cápsulas</h4>
+                                        <p>Navega por categorías o usa el buscador para encontrar contenido relevante.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h4>Aprende y Aplica</h4>
+                                        <p>Visualiza o descarga las cápsulas y aplica los conocimientos en tu día a día.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Cápsulas -->
+    <section id="capsulas" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Recursos Educativos</span>
+                <h2 class="section-title">Cápsulas Disponibles</h2>
+                <p class="section-description">Accede a nuestra biblioteca de recursos breves y prácticos.</p>
+            </div>
+
+            <!-- Filtros y búsqueda -->
+            <div class="filters-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Buscar cápsulas..." aria-label="Buscar cápsulas">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="filters-group">
+                    <div class="category-filter">
+                        <label for="category-select" class="sr-only">Filtrar por categoría</label>
+                        <select id="category-select">
+                            <option value="todas">Todas las categorías</option>
+                            <option value="educacion_fisica">Educación Física</option>
+                            <option value="salud_mental">Salud Mental</option>
+                            <option value="medicina">Medicina</option>
+                        </select>
+                    </div>
+                    <div class="sort-filter">
+                        <label for="sort-select" class="sr-only">Ordenar por</label>
+                        <select id="sort-select">
+                            <option value="nuevas">Más recientes</option>
+                            <option value="populares">Más populares</option>
+                            <option value="duracion">Duración</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de cápsulas -->
+            <div id="capsulas-grid" class="capsulas-grid">
+                <!-- Las cápsulas se cargarán dinámicamente aquí -->
+                <div class="loading">Cargando cápsulas...</div>
+            </div>
+
+            <div class="section-cta">
+                <p>¿No encuentras lo que buscas?</p>
+                <a href="#contacto" class="btn btn-outline">Sugerir contenido</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Testimonios -->
+    <section id="testimonios" class="section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Experiencias Reales</span>
+                <h2 class="section-title">Testimonios</h2>
+                <p class="section-description">Descubre cómo Vitalink está impactando positivamente a profesionales
+                    rurales.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <div class="testimonial-avatar">👩‍⚕️</div>
+                    <div class="testimonial-content">
+                        <p>"Las cápsulas de Vitalink me han ayudado a manejar el estrés de trabajar en un consultorio
+                            rural con recursos limitados. Los ejercicios de respiración son mi favorito para aplicar
+                            entre consultas."</p>
+                        <div class="testimonial-author">
+                            <strong>María González</strong>
+                            <span>Enfermera, Comuna de Putaendo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <div class="testimonial-avatar">👨‍🏫</div>
+                    <div class="testimonial-content">
+                        <p>"Como profesor rural, tengo poco tiempo para mi autocuidado. Las cápsulas cortas de Vitalink
+                            se ajustan perfectamente a mis pausas entre clases. La rutina de ejercicios para la espalda
+                            me cambió la vida."</p>
+                        <div class="testimonial-author">
+                            <strong>Carlos Rojas</strong>
+                            <span>Profesor, Comuna de Cochamó</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">★★★★☆</div>
+                    <div class="testimonial-avatar">👩‍🌾</div>
+                    <div class="testimonial-content">
+                        <p>"Las rutinas de ejercicio adaptadas para espacios pequeños han cambiado mi rutina diaria.
+                            Ahora puedo mantenerme activa sin necesidad de equipamiento especial. La comunidad de
+                            Vitalink es muy apoyadora."</p>
+                        <div class="testimonial-author">
+                            <strong>Ana Silva</strong>
+                            <span>Agrónoma, Comuna de Colbún</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección FAQ -->
+    <section id="faq" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">¿Tienes dudas?</span>
+                <h2 class="section-title">Preguntas Frecuentes</h2>
+                <p class="section-description">Resolvemos las consultas más comunes sobre Vitalink.</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Vitalink es completamente gratuito?</span>
+                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, Vitalink es completamente gratuito para todos los profesionales que trabajan en zonas
+                            rurales. Creemos que el acceso al autocuidado no debería tener barreras económicas.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Necesito conexión a internet para acceder al contenido?</span>
+                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Solo necesitas conexión a internet para registrarte y descargar las cápsulas. Una vez
+                            descargadas, puedes acceder a ellas sin conexión en cualquier momento.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Cómo se determina si soy un profesional rural?</span>
+                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Consideramos profesional rural a cualquier persona que preste servicios profesionales (salud,
+                            educación, agricultura, etc.) en localidades con menos de 5,000 habitantes o en zonas
+                            geográficamente aisladas.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Puedo sugerir temas para nuevas cápsulas?</span>
+                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>¡Absolutamente! Valoramos mucho las sugerencias de nuestra comunidad. Puedes enviarnos tus
+                            ideas a través del formulario de contacto o directamente desde tu perfil si ya tienes una
+                            cuenta.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>¿Con qué frecuencia se publica nuevo contenido?</span>
+                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Publicamos nuevas cápsulas cada semana, rotando entre las tres categorías principales.
+                            También enviamos un boletín mensual con novedades y contenido destacado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Contacto -->
+    <section id="contacto" class="section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Estamos aquí para ayudarte</span>
+                <h2 class="section-title">Contacto</h2>
+                <p class="section-description">¿Tienes preguntas, sugerencias o necesitas ayuda? No dudes en
+                    contactarnos.</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>¿En qué podemos ayudarte?</h3>
+                    <p>Estamos aquí para apoyarte en tu camino de autocuidado. Completa el formulario y nos pondremos en
+                        contacto contigo a la brevedad.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div>
+                                <strong>Email</strong>
+                                <p>contacto@vitalink.cl</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🕒</div>
+                            <div>
+                                <strong>Horario de atención</strong>
+                                <p>Lunes a Viernes, 9:00 - 18:00 hrs</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div>
+                                <strong>Ubicación</strong>
+                                <p>Centro de Recursos para Zonas Rurales</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nombre completo</label>
+                            <input type="text" id="name" name="name" required aria-required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required aria-required="true">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Asunto</label>
+                        <input type="text" id="subject" name="subject" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" name="message" rows="5" required aria-required="true"
+                            placeholder="Cuéntanos en qué podemos ayudarte..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Enviar mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <span class="logo-icon">💙</span>
+                        Vitalink
+                    </div>
+                    <p>Apoyo para profesionales rurales mediante cápsulas de autocuidado en educación física, salud
+                        mental y medicina.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><span>📘</span></a>
+                        <a href="#" aria-label="Instagram"><span>📷</span></a>
+                        <a href="#" aria-label="Twitter"><span>🐦</span></a>
+                        <a href="#" aria-label="YouTube"><span>📺</span></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Plataforma</h4>
+                        <ul>
+                            <li><a href="#inicio">Inicio</a></li>
+                            <li><a href="#beneficios">Beneficios</a></li>
+                            <li><a href="#que-es">Qué es Vitalink</a></li>
+                            <li><a href="#capsulas">Cápsulas</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Recursos</h4>
+                        <ul>
+                            <li><a href="#testimonios">Testimonios</a></li>
+                            <li><a href="#faq">Preguntas Frecuentes</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Guías Prácticas</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Términos de uso</a></li>
+                            <li><a href="#">Política de privacidad</a></li>
+                            <li><a href="#">Cookies</a></li>
+                            <li><a href="#contacto">Contacto</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Vitalink. Todos los derechos reservados. | Desarrollado con 💚 para profesionales rurales
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Autenticación -->
+    <div id="auth-modal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar modal">×</button>
+            <div class="auth-header">
+                <h2>Accede a Vitalink</h2>
+                <p>Ingresa a tu cuenta o crea una nueva para acceder a todas las cápsulas.</p>
+            </div>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Iniciar Sesión</button>
+                <button class="tab-btn" data-tab="register">Crear Cuenta</button>
+            </div>
+
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required aria-required="true" placeholder="tu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" required aria-required="true" placeholder="••••••••">
+                </div>
+                <div class="form-options">
+                    <label class="checkbox">
+                        <input type="checkbox" id="remember-me">
+                        <span class="checkmark"></span>
+                        Recordarme
+                    </label>
+                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Iniciar Sesión</button>
+            </form>
+
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required aria-required="true" placeholder="tu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña</label>
+                    <input type="password" id="register-password" required aria-required="true" placeholder="••••••••"
+                        minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar Contraseña</label>
+                    <input type="password" id="confirm-password" required aria-required="true" placeholder="••••••••"
+                        minlength="6">
+                </div>
+                <div class="form-options">
+                    <label class="checkbox">
+                        <input type="checkbox" id="accept-terms" required>
+                        <span class="checkmark"></span>
+                        Acepto los <a href="#">términos y condiciones</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Crear Cuenta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Panel de Usuario (oculto inicialmente) -->
+    <!-- Panel de Usuario (oculto inicialmente) -->
+    <div id="user-panel" class="user-panel">
+        <div class="panel-header">
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">U</div>
+                <div class="user-details">
+                    <span id="user-email">usuario@ejemplo.com</span>
+                    <button id="logout-btn" class="btn btn-outline btn-small">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-content">
+            <!-- Panel de administrador -->
+            <div id="admin-panel">
+                <h3>Panel de Administración</h3>
+
+                <div class="admin-section">
+                    <h4>Subir Nueva Cápsula</h4>
+                    <form id="upload-form" class="upload-form">
+                        <div class="form-group">
+                            <label for="capsule-title">Título</label>
+                            <input type="text" id="capsule-title" required aria-required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="capsule-category">Categoría</label>
+                            <select id="capsule-category" required aria-required="true">
+                                <option value="">Selecciona una categoría</option>
+                                <option value="educacion_fisica">Educación Física</option>
+                                <option value="salud_mental">Salud Mental</option>
+                                <option value="medicina">Medicina</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="capsule-description">Descripción</label>
+                            <textarea id="capsule-description" rows="3" required aria-required="true"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="capsule-duration">Duración (minutos)</label>
+                            <input type="number" id="capsule-duration" min="1" required aria-required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="capsule-file">Archivo (PDF, MP4, MOV, AVI, JPG, PNG)</label>
+                            <input type="file" id="capsule-file" accept=".pdf,.mp4,.mov,.avi,.jpg,.jpeg,.png" required
+                                aria-required="true">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Subir Cápsula</button>
+                    </form>
+                </div>
+
+                <div class="admin-section">
+                    <h4>Mis Archivos Subidos</h4>
+                    <div id="my-files-list" class="files-list">
+                        <!-- Los archivos del usuario se cargarán aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel para usuarios regulares -->
+            <div id="regular-panel">
+                <h3>Mi Perfil</h3>
+                <p>Bienvenido a Vitalink. Aquí puedes acceder a todas las cápsulas de autocuidado disponibles.</p>
+                <p>Si necesitas ayuda, no dudes en contactarnos a través del formulario de contacto.</p>
+
+                <div class="user-stats">
+                    <div class="user-stat">
+                        <span class="user-stat-number">12</span>
+                        <span class="user-stat-label">Cápsulas vistas</span>
+                    </div>
+                    <div class="user-stat">
+                        <span class="user-stat-number">5</span>
+                        <span class="user-stat-label">Cápsulas descargadas</span>
+                    </div>
+                    <div class="user-stat">
+                        <span class="user-stat-number">3</span>
+                        <span class="user-stat-label">Categorías exploradas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast/Notificaciones -->
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
