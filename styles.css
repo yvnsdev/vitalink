@@ -1806,3 +1806,31 @@ body {
   .alianza-item { height: 180px; }
   .alianza-logo { max-height: 96px; }
 }
+
+.social-links {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+}
+.social {
+  display: inline-flex;
+  width: 42px; height: 42px;
+  align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: #111; /* fondo base (modo oscuro) */
+  color: #fff;
+  text-decoration: none;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.social i { font-size: 18px; line-height: 1; }
+
+/* Colores por marca al hover/focus */
+.social.fb:hover, .social.fb:focus { background: #1877F2; box-shadow: 0 0 0 4px #1877f235; }
+.social.ig:hover, .social.ig:focus { 
+  background: radial-gradient(circle at 30% 110%, #feda75 0%, #d62976 50%, #962fbf 70%, #4f5bd5 100%);
+  box-shadow: 0 0 0 4px #d6297635;
+}
+.social.tw:hover, .social.tw:focus { background: #000; box-shadow: 0 0 0 4px #00000035; }
+.social.yt:hover, .social.yt:focus { background: #FF0000; box-shadow: 0 0 0 4px #ff000035; }
+
+.social:active { transform: scale(0.96); }
