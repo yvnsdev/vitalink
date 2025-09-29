@@ -752,9 +752,31 @@ body {
   margin-bottom: 1rem;
 }
 
-.testimonial-avatar {
-  font-size: 4rem;
-  margin-bottom: 1.5rem;
+/* ==== Testimonios: avatar consistente ==== */
+.testimonial-avatar{
+  width: 64px;               /* tamaño uniforme */
+  height: 64px;
+  border-radius: 9999px;     /* círculo */
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 2px solid rgba(0,0,0,.06);
+  background: #f4f6f8;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+
+.testimonial-avatar img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* recorta sin deformar */
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Opcional: avatares un poco más grandes en pantallas grandes */
+@media (min-width: 1024px){
+  .testimonial-avatar{ width: 72px; height: 72px; }
 }
 
 .testimonial-content p {
@@ -1546,4 +1568,241 @@ body {
 /* Botón de reproducir video */
 .play-video-btn {
     cursor: pointer;
+}
+
+/* Estilos para miniaturas personalizadas */
+.capsula-image.has-thumbnail {
+    background: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.capsula-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.capsula-card:hover .capsula-thumbnail {
+    transform: scale(1.05);
+}
+
+.capsula-icon {
+    font-size: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* Texto de ayuda para formularios */
+.form-help {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* Previsualización de miniatura */
+.thumbnail-preview {
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.thumbnail-preview.active {
+    display: block;
+}
+
+.thumbnail-preview img {
+    max-width: 150px;
+    max-height: 100px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+/* Sección Alianzas - Versión con 5 fijos por línea */
+.alianzas-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+    align-items: center;
+    justify-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.alianza-item {
+  background: #fff;
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  display: grid;              /* apila logo arriba y texto abajo */
+  align-content: start;
+  justify-items: center;
+  gap: .55rem;
+  height: 160px;              /* antes 100px */
+  width: 100%;
+}
+
+.alianza-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.alianza-logo {
+    max-width: 100%;
+    max-height: 80px;
+    object-fit: contain;
+    width: auto;
+    height: auto;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: var(--transition);
+}
+
+.alianza-item:hover .alianza-logo {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* Responsive para alianzas */
+@media (min-width: 640px) {
+    .alianzas-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .alianzas-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .alianzas-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    .alianza-item {
+        height: 140px;
+        padding: 2rem;
+    }
+    
+    .alianza-logo {
+        max-width: 180px;
+        max-height: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .alianzas-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .alianza-item {
+        height: 100px;
+        padding: 1rem;
+    }
+    
+    .alianza-logo {
+        max-width: 120px;
+        max-height: 60px;
+    }
+}
+
+/* Carrusel de alianzas */
+.alianzas-carousel {
+  position: relative;
+  margin-top: 2rem;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0.5rem 0.25rem;
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.carousel-track::-webkit-scrollbar { display: none; } /* Chrome */
+
+.alianza-item {
+  flex: 0 0 auto;
+  width: clamp(180px, 22vw, 240px);
+  scroll-snap-align: start;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+}
+
+.alianza-logo {
+  max-width: 100%;
+  max-height: 68px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.9;
+  transition: transform .2s ease, opacity .2s ease, filter .2s ease;
+}
+.alianza-item:hover .alianza-logo {
+  filter: grayscale(0);
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+/* Botones del carrusel */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  box-shadow: var(--shadow-md);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+.carousel-btn:focus { outline: 3px solid rgba(21,128,61,.25); }
+.carousel-btn.prev { left: -8px; }
+.carousel-btn.next { right: -8px; }
+
+@media (max-width: 640px) {
+  .carousel-btn { display: none; } /* en móvil usamos swipe */
+}
+
+.alianza-caption{
+  text-align:center;
+  font-size:.92rem;
+  color:#58606a; /* o var(--text-muted) */
+  line-height:1.25;
+  display:grid;
+  gap:.15rem;
+  min-height: 2.2em;
+}
+
+.alianza-caption strong{
+  font-weight:600;
+  color:#2a2f36; /* o var(--text) */
+}
+
+.alianza-caption span{
+  font-size:.85rem;
+  opacity:.9;
+}
+
+@media (min-width: 1024px) {
+  .alianza-item { height: 180px; }
+  .alianza-logo { max-height: 96px; }
 }

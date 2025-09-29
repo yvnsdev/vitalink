@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     loadCapsules();
     initFAQ();
     initScrollEffects();
+    initAlliancesCarousel();
 });
 
 // Inicializar cliente Supabase
@@ -149,6 +150,10 @@ function initEventListeners() {
             closeUserPanel();
         }
     });
+
+    initFilePreview();
+    initThumbnailPreview();
+    
 }
 
 // Inicializar FAQ
@@ -511,7 +516,6 @@ function getMockCapsulas() {
 }
 
 // Renderizar cápsulas en el grid
-// Actualiza la función renderCapsules:
 function renderCapsules(capsules) {
     const capsulesGrid = document.getElementById('capsulas-grid');
 
@@ -526,10 +530,15 @@ function renderCapsules(capsules) {
         const isVideo = capsule.file_type === 'video' ||
             (capsule.public_url && /\.(mp4|mov|avi)$/i.test(capsule.public_url));
 
+        // Usar miniatura personalizada si está disponible, sino usar el icono de categoría
+        const thumbnailContent = capsule.thumbnail_url ? 
+            `<img src="${capsule.thumbnail_url}" alt="${capsule.title}" class="capsula-thumbnail">` :
+            `<div class="capsula-icon">${getCategoryIcon(capsule.category)}</div>`;
+
         return `
         <div class="capsula-card" data-category="${capsule.category}">
-            <div class="capsula-image">
-                ${isVideo ? '🎥' : getCategoryIcon(capsule.category)}
+            <div class="capsula-image ${capsule.thumbnail_url ? 'has-thumbnail' : ''}">
+                ${thumbnailContent}
                 ${isVideo ? '<div class="video-indicator">VIDEO</div>' : ''}
             </div>
             <div class="capsula-content">
@@ -669,7 +678,6 @@ function handleContact(e) {
 }
 
 // Manejar subida de cápsula
-// Reemplaza la función handleUpload actual con esta versión mejorada:
 async function handleUpload(e) {
     e.preventDefault();
 
@@ -683,10 +691,12 @@ async function handleUpload(e) {
     const description = document.getElementById('capsule-description').value;
     const duration = document.getElementById('capsule-duration').value;
     const fileInput = document.getElementById('capsule-file');
+    const thumbnailInput = document.getElementById('capsule-thumbnail');
     const file = fileInput.files[0];
+    const thumbnailFile = thumbnailInput.files[0];
 
     if (!file) {
-        showToast('Selecciona un archivo', 'error');
+        showToast('Selecciona un archivo principal', 'error');
         return;
     }
 
@@ -702,7 +712,14 @@ async function handleUpload(e) {
         'image/png'
     ];
 
+    const allowedThumbnailTypes = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png'
+    ];
+
     const maxSize = 100 * 1024 * 1024; // 100MB máximo para videos
+    const maxThumbnailSize = 5 * 1024 * 1024; // 5MB máximo para miniaturas
 
     if (!allowedTypes.includes(file.type)) {
         showToast('Tipo de archivo no permitido. Usa PDF, MP4, MOV, AVI, JPG o PNG.', 'error');
@@ -712,6 +729,22 @@ async function handleUpload(e) {
     if (file.size > maxSize) {
         showToast('El archivo es demasiado grande. Máximo 100MB.', 'error');
         return;
+    }
+
+    // Validar miniatura si se proporciona
+    let thumbnailPath = null;
+    let thumbnailUrl = null;
+
+    if (thumbnailFile) {
+        if (!allowedThumbnailTypes.includes(thumbnailFile.type)) {
+            showToast('La miniatura debe ser una imagen JPG o PNG', 'error');
+            return;
+        }
+
+        if (thumbnailFile.size > maxThumbnailSize) {
+            showToast('La miniatura es demasiado grande. Máximo 5MB.', 'error');
+            return;
+        }
     }
 
     // Mostrar estado de carga
@@ -730,7 +763,7 @@ async function handleUpload(e) {
         const fileExt = file.name.split('.').pop();
         const filePath = `${category}/${slug}-${timestamp}.${fileExt}`;
 
-        // Subir archivo a Supabase Storage
+        // Subir archivo principal a Supabase Storage
         const { data: uploadData, error: uploadError } = await supabase.storage
             .from('capsulas')
             .upload(filePath, file, {
@@ -742,10 +775,34 @@ async function handleUpload(e) {
             throw uploadError;
         }
 
-        // Obtener URL pública
+        // Obtener URL pública del archivo principal
         const { data: urlData } = supabase.storage
             .from('capsulas')
             .getPublicUrl(filePath);
+
+        // Subir miniatura si se proporcionó
+        if (thumbnailFile) {
+            const thumbnailExt = thumbnailFile.name.split('.').pop();
+            const thumbnailPath = `thumbnails/${slug}-${timestamp}.${thumbnailExt}`;
+
+            const { data: thumbnailUploadData, error: thumbnailUploadError } = await supabase.storage
+                .from('capsulas')
+                .upload(thumbnailPath, thumbnailFile, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+
+            if (thumbnailUploadError) {
+                throw thumbnailUploadError;
+            }
+
+            // Obtener URL pública de la miniatura
+            const { data: thumbnailUrlData } = supabase.storage
+                .from('capsulas')
+                .getPublicUrl(thumbnailPath);
+
+            thumbnailUrl = thumbnailUrlData.publicUrl;
+        }
 
         // Determinar el tipo de contenido
         const isVideo = file.type.startsWith('video/');
@@ -763,6 +820,7 @@ async function handleUpload(e) {
                     duration_minutes: parseInt(duration),
                     file_path: filePath,
                     public_url: urlData.publicUrl,
+                    thumbnail_url: thumbnailUrl, // Nueva columna para la miniatura
                     file_type: contentType,
                     file_size: file.size,
                     owner: currentUser.id
@@ -884,3 +942,77 @@ function initFilePreview() {
 }
 
 // Llama a esta función en initEventListeners()
+
+// Agrega esta función para previsualizar la miniatura antes de subir
+function initThumbnailPreview() {
+    const thumbnailInput = document.getElementById('capsule-thumbnail');
+    if (thumbnailInput) {
+        thumbnailInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Crear o actualizar la previsualización
+                    let previewContainer = document.getElementById('thumbnail-preview');
+                    if (!previewContainer) {
+                        previewContainer = document.createElement('div');
+                        previewContainer.id = 'thumbnail-preview';
+                        previewContainer.className = 'thumbnail-preview';
+                        thumbnailInput.parentNode.appendChild(previewContainer);
+                    }
+                    
+                    previewContainer.innerHTML = `<img src="${e.target.result}" alt="Vista previa de miniatura">`;
+                    previewContainer.classList.add('active');
+                    
+                    showToast(`Miniatura seleccionada: ${file.name}`, 'info');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+}
+
+function initAlliancesCarousel() {
+  const root = document.getElementById('alianzas-carousel');
+  if (!root) return;
+
+  const track = root.querySelector('.carousel-track');
+  const prev = root.querySelector('.prev');
+  const next = root.querySelector('.next');
+
+  // Mostrar flechas solo si hay más de 5 logos
+  const items = track.querySelectorAll('.alianza-item');
+  const showArrows = items.length > 5;
+  prev.style.display = next.style.display = showArrows ? 'block' : 'none';
+
+  const pageScroll = () => track.clientWidth * 0.9;
+
+  prev.addEventListener('click', () => {
+    track.scrollBy({ left: -pageScroll(), behavior: 'smooth' });
+  });
+  next.addEventListener('click', () => {
+    track.scrollBy({ left: pageScroll(), behavior: 'smooth' });
+  });
+
+  // Accesibilidad con teclado dentro del carrusel
+  track.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prev.click();
+    if (e.key === 'ArrowRight') next.click();
+  });
+
+  // Opcional: snap al item más cercano después de scroll
+  let snapTimeout;
+  track.addEventListener('scroll', () => {
+    clearTimeout(snapTimeout);
+    snapTimeout = setTimeout(() => {
+      // elegir el item más cercano al borde izquierdo
+      const { left } = track.getBoundingClientRect();
+      let best = null, bestDist = Infinity;
+      items.forEach(it => {
+        const dist = Math.abs(it.getBoundingClientRect().left - left);
+        if (dist < bestDist) { bestDist = dist; best = it; }
+      });
+      if (best) best.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+    }, 120);
+  }, { passive: true });
+}

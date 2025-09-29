@@ -27,10 +27,11 @@
             <ul class="nav-menu">
                 <li><a href="#inicio" class="nav-link">Inicio</a></li>
                 <li><a href="#beneficios" class="nav-link">Beneficios</a></li>
-                <li><a href="#que-es" class="nav-link">Qué es Vitalink</a></li>
+                <li><a href="#que-es" class="nav-link">Qué somos</a></li>
                 <li><a href="#capsulas" class="nav-link">Cápsulas</a></li>
                 <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
-                <li><a href="#faq" class="nav-link">Preguntas Frecuentes</a></li>
+                <li><a href="#alianzas" class="nav-link">Alianzas</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
                 <li><a href="#contacto" class="nav-link">Contacto</a></li>
                 <li class="nav-auth">
                     <button id="auth-btn" class="btn btn-outline">Acceder</button>
@@ -270,47 +271,142 @@
                     rurales.</p>
             </div>
             <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">★★★★★</div>
-                    <div class="testimonial-avatar">👩‍⚕️</div>
+                <div class="testimonial-card" data-region="Ñuble" data-comuna="Cobquecura">
+                    <div class="testimonial-rating" aria-label="5 de 5">★★★★★</div>
+                    <div class="testimonial-avatar">
+                        <img src="assets/testimonio1.png" alt="María González — Enfermera" loading="lazy">
+                    </div>
                     <div class="testimonial-content">
-                        <p>"Las cápsulas de Vitalink me han ayudado a manejar el estrés de trabajar en un consultorio
-                            rural con recursos limitados. Los ejercicios de respiración son mi favorito para aplicar
-                            entre consultas."</p>
+                        <p>"En el puesto de salud costero tenemos tiempos muy acotados. Las cápsulas breves de
+                            respiración y pausas activas de Vitalink las aplico entre controles de niños y adultos."</p>
                         <div class="testimonial-author">
-                            <strong>María González</strong>
-                            <span>Enfermera, Comuna de Putaendo</span>
+                            <strong>Catalina González</strong>
+                            <span>TENS, Cobquecura (Ñuble)</span>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">★★★★★</div>
-                    <div class="testimonial-avatar">👨‍🏫</div>
+
+                <div class="testimonial-card" data-region="Biobío" data-comuna="Tirúa">
+                    <div class="testimonial-rating" aria-label="5 de 5">★★★★★</div>
+                    <div class="testimonial-avatar">
+                        <img src="assets/testimonio2.png" alt="Juan Pablo Segura — Profesor de EF" loading="lazy">
+                    </div>
                     <div class="testimonial-content">
-                        <p>"Como profesor rural, tengo poco tiempo para mi autocuidado. Las cápsulas cortas de Vitalink
-                            se ajustan perfectamente a mis pausas entre clases. La rutina de ejercicios para la espalda
-                            me cambió la vida."</p>
+                        <p>"Como profe de Educación Física en escuela rural multigrado, uso las cápsulas de movilidad de
+                            5 minutos para iniciar la jornada. Mejoró la atención y el ánimo de mis cursos."</p>
                         <div class="testimonial-author">
-                            <strong>Carlos Rojas</strong>
-                            <span>Profesor, Comuna de Cochamó</span>
+                            <strong>Juan Pablo Segura</strong>
+                            <span>Profesor de EF, Tirúa (Biobío)</span>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">★★★★☆</div>
-                    <div class="testimonial-avatar">👩‍🌾</div>
+
+                <div class="testimonial-card" data-region="Ñuble" data-comuna="San Fabián">
+                    <div class="testimonial-rating" aria-label="5 de 5">★★★★★</div>
+                    <div class="testimonial-avatar">
+                        <img src="assets/testimonio3.png" alt="Valeria Henriquez — Kinesióloga" loading="lazy">
+                    </div>
                     <div class="testimonial-content">
-                        <p>"Las rutinas de ejercicio adaptadas para espacios pequeños han cambiado mi rutina diaria.
-                            Ahora puedo mantenerme activa sin necesidad de equipamiento especial. La comunidad de
-                            Vitalink es muy apoyadora."</p>
+                        <p>"En APS rural veo mucho dolor lumbar en temporeros. La cápsula de higiene de columna y la
+                            guía de levantamiento seguro me han servido para educación breve en box."</p>
                         <div class="testimonial-author">
-                            <strong>Ana Silva</strong>
-                            <span>Agrónoma, Comuna de Colbún</span>
+                            <strong>Valeria Henriquez</strong>
+                            <span>Kinesióloga CESFAM, San Fabián (Ñuble)</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+    </section>
+
+    <!-- Sección Alianzas -->
+    <section id="alianzas" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Nuestros Aliados</span>
+                <h2 class="section-title">Entidades que nos Apoyan</h2>
+                <p class="section-description">Colaboramos con instituciones comprometidas con el bienestar de los
+                    profesionales rurales.</p>
+            </div>
+            <div class="alianzas-carousel" id="alianzas-carousel">
+                <button class="carousel-btn prev" aria-label="Anterior" tabindex="0">‹</button>
+
+                <div class="carousel-track" role="region" aria-label="Carrusel de entidades" tabindex="0">
+                    <div class="alianza-item">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO_pWgkIOIcmYPoRTaLT4g98ohlpIXljwftQ&s"
+                            alt="Escuela de Ingeniería Civil Informática — UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Escuela de Ingeniería Civil Informática</strong>
+                            <span>Universidad del Bío-Bío (UBB)</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJGWWY9I5gV7mY7fvHKb457cw1oXVX1Ad-xQ&s"
+                            alt="Escuela de Ingeniería Comercial — UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Escuela de Ingeniería Comercial</strong>
+                            <span>Universidad del Bío-Bío (UBB)</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_Fd0pnX6ToCK68DxFpnBG1SL8DAGyr5GbDA&s"
+                            alt="Escuela de Enfermería — UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Escuela de Enfermería</strong>
+                            <span>Universidad del Bío-Bío (UBB)</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="https://lh4.googleusercontent.com/proxy/BYWcgBxhjah7JgNR2jT0Qx8RsFcxVSuUYhYY2mfnRyaPemfJmuGUUmiRGi0I1nyTGMuftSgIWrSmjyvu8dqcOpjgSOOBRm29nbrU7of2Oh3Hgd7V6P6EGggCwVXrCcZm1Qw06A"
+                            alt="Escuela de Psicología — UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Escuela de Psicología</strong>
+                            <span>Universidad del Bío-Bío (UBB)</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="https://cosuafa2022.ubiobio.cl/wp-content/uploads/2022/08/LOGO-EDUCACION-FISICA-UBB-1-1024x473.jpg"
+                            alt="Pedagogía en Educación Física — UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Pedagogía en Educación Física</strong>
+                            <span>Universidad del Bío-Bío (UBB)</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="https://fpymenuble.cl/wp-content/uploads/2021/11/logo-red-fondo-blanco.jpg"
+                            alt="Red de Asistencia Digital Fortalece Pyme Ñuble — CORFO" class="alianza-logo"
+                            loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Fortalece Pyme Ñuble</strong>
+                            <span>Red de Asistencia Digital — CORFO</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="assets/polo.jpg" alt="Polo de Salud — UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Polo de Salud</strong>
+                            <span>Universidad del Bío-Bío (UBB)</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="https://eco-sd.cl/static/ecosistema_salud/imgs/logo_ecosistema.png"
+                            alt="Ecosistema de Salud Digital — Encuentro UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Ecosistema de Salud Digital</strong>
+                            <span>Encuentro CENS</span>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="carousel-btn next" aria-label="Siguiente" tabindex="0">›</button>
+            </div>
+
     </section>
 
     <!-- Sección FAQ -->
@@ -623,6 +719,13 @@
                             <label for="capsule-file">Archivo (PDF, MP4, MOV, AVI, JPG, PNG)</label>
                             <input type="file" id="capsule-file" accept=".pdf,.mp4,.mov,.avi,.jpg,.jpeg,.png" required
                                 aria-required="true">
+                        </div>
+                        <!-- En el panel de administración, dentro del formulario de subida -->
+                        <div class="form-group">
+                            <label for="capsule-thumbnail">Miniatura Personalizada (JPG, PNG)</label>
+                            <input type="file" id="capsule-thumbnail" accept=".jpg,.jpeg,.png" aria-required="false">
+                            <small class="form-help">Imagen que se mostrará como portada de la cápsula
+                                (opcional)</small>
                         </div>
                         <button type="submit" class="btn btn-primary">Subir Cápsula</button>
                     </form>
