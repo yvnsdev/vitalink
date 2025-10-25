@@ -1123,3 +1123,49 @@ function initAlliancesCarousel() {
         }, 120);
     }, { passive: true });
 }
+
+// Stepper automático cada 3 s (cíclico correcto)
+(function () {
+  const stepsWrap = document.querySelector('.how-it-works .steps');
+  if (!stepsWrap) return;
+  const steps = [...stepsWrap.querySelectorAll('.step')];
+  const total = steps.length;
+  let index = 0;
+  let timer = null;
+  let started = false;
+
+  function clearAll() {
+    steps.forEach(s => s.classList.remove('active', 'completed'));
+  }
+
+  function showStep(i) {
+    clearAll();
+    steps[i].classList.add('active');
+    const progress = (i / (total - 1)) * 100;
+    stepsWrap.style.setProperty('--progress', progress);
+    setTimeout(() => {
+      steps[i].classList.remove('active');
+      steps[i].classList.add('completed');
+    }, 1000);
+  }
+
+  function cycleSteps() {
+    showStep(index);
+    index = (index + 1) % total; // al llegar al último, vuelve a 0
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        cycleSteps();
+        timer = setInterval(cycleSteps, 3000);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  io.observe(stepsWrap);
+
+  window.addEventListener('beforeunload', () => clearInterval(timer));
+})();
+

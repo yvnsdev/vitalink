@@ -1890,3 +1890,117 @@ body {
   opacity: 1;                /* antes 0.9 */
   mix-blend-mode: lighten;   /* antes screen */
 }
+
+/* ==== Stepper con línea de progreso y animaciones ==== */
+.how-it-works .steps {
+  position: relative;
+  gap: 4rem;                    /* un poco más de aire entre pasos */
+  padding: 1.5rem 0 0.5rem;     /* espacio para la línea */
+}
+
+/* Línea base (gris) detrás de los pasos */
+.how-it-works .steps::before {
+  content: "";
+  position: absolute;
+  top: 30px;                    /* centro vertical del círculo (60px/2) */
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--border-color);
+  z-index: 0;
+  border-radius: 999px;
+}
+
+/* Línea de progreso (azul) controlada por --progress (0 a 100) */
+.how-it-works .steps::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  left: 0;
+  height: 4px;
+  width: calc(var(--progress, 0) * 1%);
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  z-index: 1;
+  border-radius: 999px;
+  transition: width 600ms ease;          /* animación de avance */
+}
+
+/* Tarjeta de paso */
+.how-it-works .step {
+  position: relative;
+  z-index: 2;                             /* por encima de la línea */
+  max-width: 280px;
+}
+
+/* Círculo del número con animación sutil */
+.how-it-works .step-number {
+  width: 60px;
+  height: 60px;
+  font-size: 1.25rem;
+  background: var(--bg-light);
+  color: var(--primary-color);
+  border: 3px solid var(--primary-light);
+  transition: transform .35s ease, background-color .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
+/* Estado activo (el paso “actual”) */
+.how-it-works .step.active .step-number {
+  transform: scale(1.06);
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--secondary-color);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
+}
+
+/* Estado completado: check dentro del círculo */
+.how-it-works .step.completed .step-number {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: #fff;
+  border-color: transparent;
+  position: relative;
+}
+.how-it-works .step.completed .step-number::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+/* Animación de aparición del contenido */
+.how-it-works .step .step-content {
+  transition: opacity .35s ease, transform .35s ease;
+  opacity: .85;
+  transform: translateY(6px);
+}
+.how-it-works .step.active .step-content,
+.how-it-works .step.completed .step-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive: apilar en móviles sin romper la línea */
+@media (max-width: 768px) {
+  .how-it-works .steps {
+    gap: 2rem;
+  }
+  .how-it-works .steps::before,
+  .how-it-works .steps::after {
+    left: 10%;
+    right: 10%;
+    width: auto;
+  }
+}
+
+/* Centrar línea respecto del círculo del stepper */
+:root { --step-circle: 60px; } /* diámetro actual del .step-number */
+.how-it-works .step-number{
+  width: var(--step-circle);
+  height: var(--step-circle);
+}
+.how-it-works .steps::before,
+.how-it-works .steps::after{
+  top: calc(var(--step-circle) / 2 + 15px); /* baja la línea; ajusta +15px si quieres */
+}
+
