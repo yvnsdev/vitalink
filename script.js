@@ -1,6 +1,6 @@
 // CONFIGURACIÓN SUPABASE - REEMPLAZAR CON TUS PROPIAS CREDENCIALES
-const SUPABASE_URL = 'https://mogtzwibejrrlpwdghop.supabase.co'; // Reemplazar con tu URL de Supabase
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vZ3R6d2liZWpycmxwd2RnaG9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMTY5MjMsImV4cCI6MjA3NDY5MjkyM30.bfI6lV2ON6RSM8sPybC25dup-oYDfpLVcsDVEP2nObw'; // Reemplazar con tu clave anónima de Supabase
+const SUPABASE_URL = 'https://mogtzwibejrrlpwdghop.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vZ3R6d2liZWpycmxwd2RnaG9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMTY5MjMsImV4cCI6MjA3NDY5MjkyM30.bfI6lV2ON6RSM8sPybC25dup-oYDfpLVcsDVEP2nObw';
 
 // Lista de emails administradores
 const ADMIN_EMAILS = ["tomas.yevenesc@gmail.com"];
@@ -19,16 +19,124 @@ document.addEventListener('DOMContentLoaded', async function () {
     initFAQ();
     initScrollEffects();
     initAlliancesCarousel();
+
+    initHeroNetwork();
 });
+
+// --- Red animada del hero (canvas de partículas) ---
+function initHeroNetwork() {
+    const canvas = document.getElementById('hero-network');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const DPR = Math.max(1, Math.floor(window.devicePixelRatio || 1));
+    const prefsReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let particles = [];
+    let W = 0, H = 0;
+    let animationId = null;
+
+    function resize() {
+        // Ajusta tamaño con DPR para nitidez
+        const rect = canvas.getBoundingClientRect();
+        W = Math.floor(rect.width);
+        H = Math.floor(rect.height);
+        canvas.width = W * DPR;
+        canvas.height = H * DPR;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        spawnParticles();
+    }
+
+    function spawnParticles() {
+        // Densidad por área (ajusta 0.00015 para más/menos)
+        // Reemplaza dentro de spawnParticles()
+        const count = Math.floor(W * H * 0.00009); // antes 0.00015 → menos partículas
+        particles = new Array(count).fill(0).map(() => ({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            vx: (Math.random() - 0.5) * 0.5,   // un poco más lento
+            vy: (Math.random() - 0.5) * 0.5,
+            r: 2.2 + Math.random() * 2.0       // antes ~1.2–2.4 → ahora 2.2–4.2 px
+        }));
+    }
+
+    function step() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Fondo sutil para “ghosting” (opcional)
+        // ctx.fillStyle = 'rgba(0,0,0,0.02)';
+        // ctx.fillRect(0,0,W,H);
+
+        // Mover y rebotar
+        for (const p of particles) {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x <= 0 || p.x >= W) p.vx *= -1;
+            if (p.y <= 0 || p.y >= H) p.vy *= -1;
+        }
+
+        // Dibujar conexiones
+        const MAX_DIST = 180; // píxeles
+        // color acorde a tu paleta (azules)
+        const lineBase = '34, 87, 214'; // rgb del primario aprox
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const a = particles[i], b = particles[j];
+                const dx = a.x - b.x, dy = a.y - b.y;
+                const d2 = dx * dx + dy * dy;
+                if (d2 < MAX_DIST * MAX_DIST) {
+                    const alpha = 1 - Math.sqrt(d2) / MAX_DIST;
+                    ctx.strokeStyle = `rgba(${lineBase}, ${alpha * 0.55})`;
+                    ctx.lineWidth = 1.6;
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = 'rgba(255, 255, 255, 0.55)';
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Dibujar nodos
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        for (const p of particles) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        animationId = requestAnimationFrame(step);
+    }
+
+    // Iniciar / detener respetando reduced-motion y visibilidad
+    function start() {
+        if (prefsReduced.matches) return;
+        cancelAnimationFrame(animationId);
+        step();
+    }
+    function stop() { cancelAnimationFrame(animationId); }
+
+    // Observadores
+    const onVisibility = () => (document.hidden ? stop() : start());
+    document.addEventListener('visibilitychange', onVisibility);
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { resize(); start(); }, 120);
+    });
+    prefsReduced.addEventListener?.('change', () => (prefsReduced.matches ? stop() : start()));
+
+    // Bootstrap
+    resize();
+    start();
+}
 
 // Inicializar cliente Supabase
 async function initSupabase() {
     try {
-        // Importar dinámicamente el cliente Supabase
-        const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-
-        // Crear cliente
-        supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Crear cliente Supabase
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         console.log('Supabase inicializado correctamente');
     } catch (error) {
@@ -132,7 +240,7 @@ function initEventListeners() {
         contactForm.addEventListener('submit', handleContact);
     }
 
-    // Formulario de subida de cápsulas
+    // Formulario de subida de recursos
     const uploadForm = document.getElementById('upload-form');
     if (uploadForm) {
         uploadForm.addEventListener('submit', handleUpload);
@@ -153,7 +261,7 @@ function initEventListeners() {
 
     initFilePreview();
     initThumbnailPreview();
-    
+
 }
 
 // Inicializar FAQ
@@ -249,10 +357,9 @@ async function checkAuthState() {
 }
 
 // Actualizar UI para usuario autenticado
-// Actualizar UI para usuario autenticado
 function updateUIForAuthenticatedUser() {
     console.log('Actualizando UI para usuario autenticado:', currentUser.email);
-    
+
     // Actualizar botón de auth
     const authBtn = document.getElementById('auth-btn');
     if (authBtn) {
@@ -260,40 +367,40 @@ function updateUIForAuthenticatedUser() {
         authBtn.removeEventListener('click', openAuthModal);
         authBtn.addEventListener('click', toggleUserPanel);
     }
-    
+
     // Actualizar avatar de usuario
     const userAvatar = document.getElementById('user-avatar');
     const userEmail = document.getElementById('user-email');
-    
+
     if (userAvatar && currentUser.email) {
         userAvatar.textContent = currentUser.email.charAt(0).toUpperCase();
     }
-    
+
     if (userEmail && currentUser.email) {
         userEmail.textContent = currentUser.email;
     }
-    
+
     // MOSTRAR PANEL DE ADMIN A TODOS LOS USUARIOS AUTENTICADOS
     const adminPanel = document.getElementById('admin-panel');
     const regularPanel = document.getElementById('regular-panel');
-    
+
     console.log('Elementos encontrados:', {
         adminPanel: adminPanel,
         regularPanel: regularPanel
     });
-    
+
     if (adminPanel) {
         adminPanel.style.display = 'block';
         console.log('Admin panel mostrado');
     }
-    
+
     if (regularPanel) {
         regularPanel.style.display = 'none';
         console.log('Regular panel ocultado');
     }
-    
+
     loadUserFiles();
-    
+
     // Cerrar modal de auth si está abierto
     closeAuthModal();
 }
@@ -475,13 +582,13 @@ function closeUserPanel() {
     }
 }
 
-// Cargar cápsulas desde Supabase
+// Cargar recursos desde Supabase
 async function loadCapsules() {
     const capsulesGrid = document.getElementById('capsulas-grid');
 
     try {
         // Mostrar estado de carga
-        capsulesGrid.innerHTML = '<div class="loading">Cargando cápsulas...</div>';
+        capsulesGrid.innerHTML = '<div class="loading">Cargando recursos...</div>';
 
         // Intentar cargar desde la tabla capsules
         let { data: capsules, error } = await supabase
@@ -494,7 +601,7 @@ async function loadCapsules() {
             capsules = getMockCapsulas();
         }
 
-        // Si no hay cápsulas, usar datos de ejemplo
+        // Si no hay recursos, usar datos de ejemplo
         if (!capsules || capsules.length === 0) {
             capsules = getMockCapsulas();
         }
@@ -503,26 +610,26 @@ async function loadCapsules() {
         renderCapsules(capsules);
 
     } catch (error) {
-        console.error('Error cargando cápsulas:', error);
+        console.error('Error cargando recursos:', error);
         capsulesData = getMockCapsulas();
         renderCapsules(capsulesData);
         showToast('Usando datos de ejemplo', 'info');
     }
 }
 
-// Obtener cápsulas de ejemplo (mock)
+// Obtener recursos de ejemplo (mock)
 function getMockCapsulas() {
     return [];
 }
 
-// Renderizar cápsulas en el grid
+// Renderizar recursos en el grid
 function renderCapsules(capsules) {
     const capsulesGrid = document.getElementById('capsulas-grid');
 
     if (!capsulesGrid) return;
 
     if (capsules.length === 0) {
-        capsulesGrid.innerHTML = '<div class="loading">No se encontraron cápsulas que coincidan con tu búsqueda</div>';
+        capsulesGrid.innerHTML = '<div class="loading">No se encontraron recursos que coincidan con tu búsqueda</div>';
         return;
     }
 
@@ -531,7 +638,7 @@ function renderCapsules(capsules) {
             (capsule.public_url && /\.(mp4|mov|avi)$/i.test(capsule.public_url));
 
         // Usar miniatura personalizada si está disponible, sino usar el icono de categoría
-        const thumbnailContent = capsule.thumbnail_url ? 
+        const thumbnailContent = capsule.thumbnail_url ?
             `<img src="${capsule.thumbnail_url}" alt="${capsule.title}" class="capsula-thumbnail">` :
             `<div class="capsula-icon">${getCategoryIcon(capsule.category)}</div>`;
 
@@ -609,26 +716,26 @@ function openVideoModal(videoUrl) {
 // Obtener icono por categoría
 function getCategoryIcon(category) {
     const icons = {
-        'educacion_fisica': '💪',
-        'salud_mental': '🧠',
-        'medicina': '🩺'
+        'salud_fisica': '<i class="fas fa-heartbeat"></i>',
+        'bienestar_mental': '<i class="fas fa-brain"></i>',
+        'competencias_profesionales': '<i class="fas fa-stethoscope"></i>'
     };
 
-    return icons[category] || '📄';
+    return icons[category] || '<i class="fas fa-file"></i>';
 }
 
 // Obtener nombre legible de categoría
 function getCategoryName(category) {
     const names = {
-        'educacion_fisica': 'Educación Física',
-        'salud_mental': 'Salud Mental',
-        'medicina': 'Medicina'
+        'salud_fisica': 'Salud Física',
+        'bienestar_mental': 'Bienestar Mental',
+        'competencias_profesionales': 'Competencias Profesionales'
     };
 
     return names[category] || category;
 }
 
-// Filtrar cápsulas
+// Filtrar recursos
 function filterCapsules() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const categoryFilter = document.getElementById('category-select').value;
@@ -677,12 +784,12 @@ function handleContact(e) {
     }, 1500);
 }
 
-// Manejar subida de cápsula
+// Manejar subida de recurso
 async function handleUpload(e) {
     e.preventDefault();
 
     if (!currentUser) {
-        showToast('Debes iniciar sesión para subir cápsulas', 'error');
+        showToast('Debes iniciar sesión para subir recursos', 'error');
         return;
     }
 
@@ -832,18 +939,18 @@ async function handleUpload(e) {
             throw capsuleError;
         }
 
-        // Actualizar lista de cápsulas
+        // Actualizar lista de recursos
         loadCapsules();
         loadUserFiles();
 
         // Limpiar formulario
         e.target.reset();
 
-        showToast('Cápsula subida correctamente', 'success');
+        showToast('Recurso subido correctamente', 'success');
 
     } catch (error) {
-        console.error('Error subiendo cápsula:', error);
-        showToast('Error al subir cápsula: ' + error.message, 'error');
+        console.error('Error subiendo recurso:', error);
+        showToast('Error al subir recurso: ' + error.message, 'error');
     } finally {
         // Restaurar botón
         submitBtn.textContent = originalText;
@@ -870,7 +977,7 @@ async function loadUserFiles() {
         }
 
         if (!files || files.length === 0) {
-            filesList.innerHTML = '<p>No has subido ninguna cápsula aún.</p>';
+            filesList.innerHTML = '<p>No has subido ningún recurso aún.</p>';
             return;
         }
 
@@ -917,15 +1024,17 @@ function showToast(message, type = 'info') {
 }
 
 // Escuchar cambios de autenticación
-supabase?.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN') {
-        currentUser = session.user;
-        updateUIForAuthenticatedUser();
-    } else if (event === 'SIGNED_OUT') {
-        currentUser = null;
-        updateUIForUnauthenticatedUser();
-    }
-});
+if (supabase) {
+    supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN') {
+            currentUser = session.user;
+            updateUIForAuthenticatedUser();
+        } else if (event === 'SIGNED_OUT') {
+            currentUser = null;
+            updateUIForUnauthenticatedUser();
+        }
+    });
+}
 
 // Puedes agregar esta función para previsualizar videos antes de subir
 function initFilePreview() {
@@ -940,8 +1049,6 @@ function initFilePreview() {
         });
     }
 }
-
-// Llama a esta función en initEventListeners()
 
 // Agrega esta función para previsualizar la miniatura antes de subir
 function initThumbnailPreview() {
@@ -960,10 +1067,10 @@ function initThumbnailPreview() {
                         previewContainer.className = 'thumbnail-preview';
                         thumbnailInput.parentNode.appendChild(previewContainer);
                     }
-                    
+
                     previewContainer.innerHTML = `<img src="${e.target.result}" alt="Vista previa de miniatura">`;
                     previewContainer.classList.add('active');
-                    
+
                     showToast(`Miniatura seleccionada: ${file.name}`, 'info');
                 };
                 reader.readAsDataURL(file);
@@ -973,46 +1080,46 @@ function initThumbnailPreview() {
 }
 
 function initAlliancesCarousel() {
-  const root = document.getElementById('alianzas-carousel');
-  if (!root) return;
+    const root = document.getElementById('alianzas-carousel');
+    if (!root) return;
 
-  const track = root.querySelector('.carousel-track');
-  const prev = root.querySelector('.prev');
-  const next = root.querySelector('.next');
+    const track = root.querySelector('.carousel-track');
+    const prev = root.querySelector('.prev');
+    const next = root.querySelector('.next');
 
-  // Mostrar flechas solo si hay más de 5 logos
-  const items = track.querySelectorAll('.alianza-item');
-  const showArrows = items.length > 5;
-  prev.style.display = next.style.display = showArrows ? 'block' : 'none';
+    // Mostrar flechas solo si hay más de 5 logos
+    const items = track.querySelectorAll('.alianza-item');
+    const showArrows = items.length > 5;
+    prev.style.display = next.style.display = showArrows ? 'block' : 'none';
 
-  const pageScroll = () => track.clientWidth * 0.9;
+    const pageScroll = () => track.clientWidth * 0.9;
 
-  prev.addEventListener('click', () => {
-    track.scrollBy({ left: -pageScroll(), behavior: 'smooth' });
-  });
-  next.addEventListener('click', () => {
-    track.scrollBy({ left: pageScroll(), behavior: 'smooth' });
-  });
+    prev.addEventListener('click', () => {
+        track.scrollBy({ left: -pageScroll(), behavior: 'smooth' });
+    });
+    next.addEventListener('click', () => {
+        track.scrollBy({ left: pageScroll(), behavior: 'smooth' });
+    });
 
-  // Accesibilidad con teclado dentro del carrusel
-  track.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') prev.click();
-    if (e.key === 'ArrowRight') next.click();
-  });
+    // Accesibilidad con teclado dentro del carrusel
+    track.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') prev.click();
+        if (e.key === 'ArrowRight') next.click();
+    });
 
-  // Opcional: snap al item más cercano después de scroll
-  let snapTimeout;
-  track.addEventListener('scroll', () => {
-    clearTimeout(snapTimeout);
-    snapTimeout = setTimeout(() => {
-      // elegir el item más cercano al borde izquierdo
-      const { left } = track.getBoundingClientRect();
-      let best = null, bestDist = Infinity;
-      items.forEach(it => {
-        const dist = Math.abs(it.getBoundingClientRect().left - left);
-        if (dist < bestDist) { bestDist = dist; best = it; }
-      });
-      if (best) best.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-    }, 120);
-  }, { passive: true });
+    // Opcional: snap al item más cercano después de scroll
+    let snapTimeout;
+    track.addEventListener('scroll', () => {
+        clearTimeout(snapTimeout);
+        snapTimeout = setTimeout(() => {
+            // elegir el item más cercano al borde izquierdo
+            const { left } = track.getBoundingClientRect();
+            let best = null, bestDist = Infinity;
+            items.forEach(it => {
+                const dist = Math.abs(it.getBoundingClientRect().left - left);
+                if (dist < bestDist) { bestDist = dist; best = it; }
+            });
+            if (best) best.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+        }, 120);
+    }, { passive: true });
 }

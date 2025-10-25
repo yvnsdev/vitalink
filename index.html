@@ -4,21 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vitalink - Apoyo para Profesionales Rurales</title>
+    <title>Althara - Plataforma de Desarrollo Profesional para Zonas Rurales</title>
+    <meta name="description"
+        content="Althara: Plataforma especializada en desarrollo profesional para trabajadores de zonas rurales mediante recursos educativos adaptados.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <link rel="icon" href="assets/new-logo.png" type="image/png">
 </head>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#inicio" class="nav-logo" aria-label="Inicio Vitalink">
-                <picture class="logo-picture">
-                    <img src="assets/favicon.png" alt="" class="logo-img" width="35" height="35">
-                </picture>
-                <span class="brand">Vitalink</span>
+            <a href="#inicio" class="nav-logo" aria-label="Inicio Althara">
+                <div class="logo-icon">
+                    <img src="assets/new-main.png" style="width: 50px;">
+                </div>
+                <span class="brand">Althara</span>
             </a>
             <button class="nav-toggle" aria-label="Abrir menú">
                 <span></span>
@@ -28,8 +34,8 @@
             <ul class="nav-menu">
                 <li><a href="#inicio" class="nav-link">Inicio</a></li>
                 <li><a href="#beneficios" class="nav-link">Beneficios</a></li>
-                <li><a href="#que-es" class="nav-link">Qué somos</a></li>
-                <li><a href="#capsulas" class="nav-link">Cápsulas</a></li>
+                <li><a href="#que-es" class="nav-link">Qué Somos</a></li>
+                <li><a href="#capsulas" class="nav-link">Recursos</a></li>
                 <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
                 <li><a href="#alianzas" class="nav-link">Alianzas</a></li>
                 <li><a href="#faq" class="nav-link">FAQ</a></li>
@@ -45,38 +51,35 @@
     <section id="inicio" class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-background">
-            <div class="hero-shape hero-shape-1"></div>
-            <div class="hero-shape hero-shape-2"></div>
-            <div class="hero-shape hero-shape-3"></div>
+            <canvas id="hero-network"></canvas>
         </div>
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">Plataforma de Autocuidado</div>
-                <h1 class="hero-title">Cápsulas de Autocuidado para <span class="highlight">Profesionales Rurales</span>
-                </h1>
-                <p class="hero-subtitle">Recursos educativos breves sobre educación física, salud mental y medicina
-                    adaptados a tu realidad rural.</p>
+                <div class="hero-badge">Plataforma de Desarrollo Profesional</div>
+                <h1 class="hero-title">Desarrollo Profesional para <span style="font-weight: bold;">Zonas Rurales</span></h1>
+                <p class="hero-subtitle">Conectamos a profesionales rurales con recursos educativos especializados,
+                    diseñados para potenciar competencias y bienestar en entornos de trabajo remotos.</p>
                 <div class="hero-actions">
                     <a href="#capsulas" class="btn btn-primary btn-large">
-                        <span>Ver Cápsulas</span>
+                        <span>Explorar Recursos</span>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </a>
-                    <a href="#que-es" class="btn btn-primary btn-large">Conoce Más</a>
+                    <a href="#que-es" class="btn btn-secondary btn-large">Conocer Más</a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
-                        <span class="stat-number">500+</span>
+                        <span class="stat-number">15+</span>
                         <span class="stat-label">Profesionales</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-number">150+</span>
-                        <span class="stat-label">Cápsulas</span>
+                        <span class="stat-number">25+</span>
+                        <span class="stat-label">Recursos</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-number">98%</span>
+                        <span class="stat-number">97%</span>
                         <span class="stat-label">Satisfacción</span>
                     </div>
                 </div>
@@ -88,65 +91,83 @@
     <section id="beneficios" class="section">
         <div class="container">
             <div class="section-header">
-                <span class="section-subtitle">¿Por qué Vitalink?</span>
-                <h2 class="section-title">Beneficios para Profesionales Rurales</h2>
-                <p class="section-description">Diseñado específicamente para las necesidades únicas de quienes trabajan
-                    en zonas rurales.</p>
+                <span class="section-subtitle">Nuestro Valor</span>
+                <h2 class="section-title">Ventajas para Profesionales Rurales</h2>
+                <p class="section-description">Una plataforma diseñada específicamente para responder a los desafíos
+                    únicos de quienes trabajan en zonas rurales y de difícil acceso.</p>
             </div>
             <div class="benefits-grid">
                 <div class="benefit-card">
-                    <div class="benefit-icon">⏱️</div>
-                    <h3>Cápsulas Breves</h3>
-                    <p>Contenido de 5-15 minutos que se adapta a tu apretada agenda.</p>
+                    <div class="benefit-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Contenido Accesible</h3>
+                    <p>Recursos educativos breves de 5-15 minutos que se adaptan a agendas complejas y limitaciones de
+                        tiempo.</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">📱</div>
+                    <div class="benefit-icon">
+                        <i class="fas fa-wifi"></i>
+                    </div>
                     <h3>Acceso Sin Conexión</h3>
-                    <p>Descarga los recursos y accede a ellos incluso sin internet.</p>
+                    <p>Descarga los recursos y accede a ellos incluso sin conexión a internet estable, ideal para zonas
+                        remotas.</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
                     <h3>Enfoque Práctico</h3>
-                    <p>Consejos y técnicas que puedes aplicar inmediatamente.</p>
+                    <p>Conocimientos y técnicas aplicables inmediatamente en tu contexto laboral específico.</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">🌱</div>
+                    <div class="benefit-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
                     <h3>Adaptado al Contexto Rural</h3>
-                    <p>Contenido creado considerando las realidades y recursos disponibles.</p>
+                    <p>Contenido desarrollado considerando realidades, recursos y desafíos específicos de entornos
+                        rurales.</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">👥</div>
-                    <h3>Comunidad de Apoyo</h3>
-                    <p>Conecta con otros profesionales en situaciones similares.</p>
+                    <div class="benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Comunidad Profesional</h3>
+                    <p>Conecta e intercambia experiencias con otros profesionales en situaciones similares.</p>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">💰</div>
-                    <h3>Completamente Gratuito</h3>
-                    <p>Acceso ilimitado sin costos para profesionales rurales.</p>
+                    <div class="benefit-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Desarrollo Continuo</h3>
+                    <p>Actualización constante de contenidos para mantener tus competencias profesionales al día.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección Qué es Vitalink -->
+    <!-- Sección Qué es Althara -->
     <section id="que-es" class="section bg-light">
         <div class="container">
             <div class="about-container">
                 <div class="about-content">
                     <div class="section-header">
                         <span class="section-subtitle">Nuestra Propuesta</span>
-                        <h2 class="section-title">Qué es Vitalink</h2>
+                        <h2 class="section-title">Qué es Althara</h2>
                     </div>
                     <div class="about-text">
                         <h3>Nuestra Misión</h3>
-                        <p>Vitalink es una plataforma diseñada específicamente para apoyar a profesionales que trabajan
-                            en zonas rurales mediante cápsulas cortas de autocuidado en tres áreas fundamentales que
-                            impactan directamente en tu bienestar y capacidad de servicio.</p>
+                        <p>Althara es una plataforma de desarrollo profesional diseñada específicamente para apoyar a
+                            trabajadores que desempeñan sus funciones en zonas rurales mediante recursos educativos
+                            especializados en tres áreas fundamentales que impactan directamente en tu eficacia
+                            profesional y bienestar integral.</p>
 
                         <div class="focus-areas">
                             <div class="focus-item">
-                                <span class="focus-icon">💪</span>
-                                <h4>Educación Física</h4>
+                                <span class="focus-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </span>
+                                <h4>Salud Física</h4>
                                 <p>Ejercicios y rutinas adaptadas para mantener tu cuerpo activo en espacios limitados,
                                     sin necesidad de equipamiento especializado.</p>
                                 <ul class="focus-features">
@@ -156,10 +177,12 @@
                                 </ul>
                             </div>
                             <div class="focus-item">
-                                <span class="focus-icon">🧠</span>
-                                <h4>Salud Mental</h4>
-                                <p>Técnicas y herramientas para gestionar el estrés, prevenir el burnout y mantener el
-                                    bienestar emocional en entornos desafiantes.</p>
+                                <span class="focus-icon">
+                                    <i class="fas fa-brain"></i>
+                                </span>
+                                <h4>Bienestar Mental</h4>
+                                <p>Técnicas y herramientas para gestionar el estrés, prevenir el desgaste profesional y
+                                    mantener el equilibrio emocional en entornos desafiantes.</p>
                                 <ul class="focus-features">
                                     <li>Técnicas de mindfulness</li>
                                     <li>Gestión del estrés laboral</li>
@@ -167,42 +190,45 @@
                                 </ul>
                             </div>
                             <div class="focus-item">
-                                <span class="focus-icon">🩺</span>
-                                <h4>Medicina</h4>
-                                <p>Conocimientos médicos prácticos para el autocuidado, prevención de enfermedades y
-                                    atención básica en contextos de recursos limitados.</p>
+                                <span class="focus-icon">
+                                    <i class="fas fa-stethoscope"></i>
+                                </span>
+                                <h4>Competencias Profesionales</h4>
+                                <p>Conocimientos prácticos para el desarrollo profesional, actualización de habilidades
+                                    y atención en contextos de recursos limitados.</p>
                                 <ul class="focus-features">
-                                    <li>Primeros auxilios básicos</li>
-                                    <li>Prevención de enfermedades</li>
-                                    <li>Autocuidado médico</li>
+                                    <li>Actualización profesional</li>
+                                    <li>Protocolos de atención</li>
+                                    <li>Desarrollo de competencias</li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="how-it-works">
-                            <h3>Cómo funciona</h3>
+                            <h3>Cómo Funciona Nuestra Plataforma</h3>
                             <div class="steps">
                                 <div class="step">
                                     <div class="step-number">1</div>
                                     <div class="step-content">
                                         <h4>Regístrate Gratis</h4>
-                                        <p>Crea tu cuenta en menos de 2 minutos con tu correo electrónico.</p>
+                                        <p>Crea tu cuenta verificada en menos de 2 minutos con tu correo electrónico
+                                            profesional.</p>
                                     </div>
                                 </div>
                                 <div class="step">
                                     <div class="step-number">2</div>
                                     <div class="step-content">
-                                        <h4>Explora Cápsulas</h4>
-                                        <p>Navega por categorías o usa el buscador para encontrar contenido relevante.
-                                        </p>
+                                        <h4>Explora Recursos</h4>
+                                        <p>Accede a nuestra biblioteca categorizada o utiliza el buscador avanzado para
+                                            encontrar contenido relevante.</p>
                                     </div>
                                 </div>
                                 <div class="step">
                                     <div class="step-number">3</div>
                                     <div class="step-content">
                                         <h4>Aprende y Aplica</h4>
-                                        <p>Visualiza o descarga las cápsulas y aplica los conocimientos en tu día a día.
-                                        </p>
+                                        <p>Visualiza o descarga los recursos y aplica los conocimientos inmediatamente
+                                            en tu práctica profesional.</p>
                                     </div>
                                 </div>
                             </div>
@@ -213,29 +239,32 @@
         </div>
     </section>
 
-    <!-- Sección Cápsulas -->
+    <!-- Sección Recursos -->
     <section id="capsulas" class="section">
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Recursos Educativos</span>
-                <h2 class="section-title">Cápsulas Disponibles</h2>
-                <p class="section-description">Accede a nuestra biblioteca de recursos breves y prácticos.</p>
+                <h2 class="section-title">Recursos Disponibles</h2>
+                <p class="section-description">Accede a nuestra biblioteca especializada de recursos breves y prácticos
+                    diseñados para profesionales rurales.</p>
             </div>
 
             <!-- Filtros y búsqueda -->
             <div class="filters-container">
                 <div class="search-box">
-                    <input type="text" id="search-input" placeholder="Buscar cápsulas..." aria-label="Buscar cápsulas">
-                    <span class="search-icon">🔍</span>
+                    <input type="text" id="search-input" placeholder="Buscar recursos..." aria-label="Buscar recursos">
+                    <span class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </span>
                 </div>
                 <div class="filters-group">
                     <div class="category-filter">
                         <label for="category-select" class="sr-only">Filtrar por categoría</label>
                         <select id="category-select">
                             <option value="todas">Todas las categorías</option>
-                            <option value="educacion_fisica">Educación Física</option>
-                            <option value="salud_mental">Salud Mental</option>
-                            <option value="medicina">Medicina</option>
+                            <option value="salud_fisica">Salud Física</option>
+                            <option value="bienestar_mental">Bienestar Mental</option>
+                            <option value="competencias_profesionales">Competencias Profesionales</option>
                         </select>
                     </div>
                     <div class="sort-filter">
@@ -249,14 +278,14 @@
                 </div>
             </div>
 
-            <!-- Grid de cápsulas -->
+            <!-- Grid de recursos -->
             <div id="capsulas-grid" class="capsulas-grid">
-                <!-- Las cápsulas se cargarán dinámicamente aquí -->
-                <div class="loading">Cargando cápsulas...</div>
+                <!-- Los recursos se cargarán dinámicamente aquí -->
+                <div class="loading">Cargando recursos...</div>
             </div>
 
             <div class="section-cta">
-                <p>¿No encuentras lo que buscas?</p>
+                <p>¿No encuentras lo que necesitas?</p><br>
                 <a href="#contacto" class="btn btn-outline">Sugerir contenido</a>
             </div>
         </div>
@@ -267,19 +296,25 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Experiencias Reales</span>
-                <h2 class="section-title">Testimonios</h2>
-                <p class="section-description">Descubre cómo Vitalink está impactando positivamente a profesionales
-                    rurales.</p>
+                <h2 class="section-title">Testimonios de Profesionales</h2>
+                <p class="section-description">Descubre cómo Althara está impactando positivamente a profesionales
+                    rurales en todo el país.</p>
             </div>
             <div class="testimonials-grid">
                 <div class="testimonial-card" data-region="Ñuble" data-comuna="Cobquecura">
-                    <div class="testimonial-rating" aria-label="5 de 5">★★★★★</div>
+                    <div class="testimonial-rating" aria-label="5 de 5">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                     <div class="testimonial-avatar">
                         <img src="assets/testimonio1.png" alt="María González — Enfermera" loading="lazy">
                     </div>
                     <div class="testimonial-content">
-                        <p>"En el puesto de salud costero tenemos tiempos muy acotados. Las cápsulas breves de
-                            respiración y pausas activas de Vitalink las aplico entre controles de niños y adultos."</p>
+                        <p>"En el puesto de salud costero tenemos tiempos muy acotados. Los recursos breves de
+                            respiración y pausas activas de Althara los aplico entre controles de pacientes."</p>
                         <div class="testimonial-author">
                             <strong>Catalina González</strong>
                             <span>TENS, Cobquecura (Ñuble)</span>
@@ -288,28 +323,41 @@
                 </div>
 
                 <div class="testimonial-card" data-region="Biobío" data-comuna="Tirúa">
-                    <div class="testimonial-rating" aria-label="5 de 5">★★★★★</div>
+                    <div class="testimonial-rating" aria-label="5 de 5">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                     <div class="testimonial-avatar">
                         <img src="assets/testimonio2.png" alt="Juan Pablo Segura — Profesor de EF" loading="lazy">
                     </div>
                     <div class="testimonial-content">
-                        <p>"Como profe de Educación Física en escuela rural multigrado, uso las cápsulas de movilidad de
-                            5 minutos para iniciar la jornada. Mejoró la atención y el ánimo de mis cursos."</p>
+                        <p>"Como profesor en escuela rural multigrado, uso los recursos de movilidad de 5 minutos para
+                            iniciar la jornada. Mejoró significativamente la atención y el ánimo de mis estudiantes."
+                        </p>
                         <div class="testimonial-author">
                             <strong>Juan Pablo Segura</strong>
-                            <span>Profesor de EF, Tirúa (Biobío)</span>
+                            <span>Profesor, Tirúa (Biobío)</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card" data-region="Ñuble" data-comuna="San Fabián">
-                    <div class="testimonial-rating" aria-label="5 de 5">★★★★★</div>
+                    <div class="testimonial-rating" aria-label="5 de 5">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                     <div class="testimonial-avatar">
                         <img src="assets/testimonio3.png" alt="Valeria Henriquez — Kinesióloga" loading="lazy">
                     </div>
                     <div class="testimonial-content">
-                        <p>"En APS rural veo mucho dolor lumbar en temporeros. La cápsula de higiene de columna y la
-                            guía de levantamiento seguro me han servido para educación breve en box."</p>
+                        <p>"En APS rural atiendo muchos casos de dolor lumbar. Las guías de higiene postural y
+                            levantamiento seguro me han servido para educación preventiva con mis pacientes."</p>
                         <div class="testimonial-author">
                             <strong>Valeria Henriquez</strong>
                             <span>Kinesióloga CESFAM, San Fabián (Ñuble)</span>
@@ -325,13 +373,49 @@
             <div class="section-header">
                 <span class="section-subtitle">Nuestros Aliados</span>
                 <h2 class="section-title">Entidades que nos Apoyan</h2>
-                <p class="section-description">Colaboramos con instituciones comprometidas con el bienestar de los
-                    profesionales rurales.</p>
+                <p class="section-description">Colaboramos con instituciones comprometidas con el desarrollo profesional
+                    en zonas rurales.</p>
             </div>
             <div class="alianzas-carousel" id="alianzas-carousel">
-                <button class="carousel-btn prev" aria-label="Anterior" tabindex="0">‹</button>
+                <button class="carousel-btn prev" aria-label="Anterior" tabindex="0">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
 
                 <div class="carousel-track" role="region" aria-label="Carrusel de entidades" tabindex="0">
+                    <div class="alianza-item">
+                        <img src="assets/fade.jpg" alt="Fondo de apoyo al desarrollo estudiantil" class="alianza-logo"
+                            loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Fondo de Apoyo</strong>
+                            <span>Desarrollo Estudiantil — UBB</span>
+                        </div>
+                    </div>
+                    <div class="alianza-item">
+                        <img src="https://fpymenuble.cl/wp-content/uploads/2021/11/logo-red-fondo-blanco.jpg"
+                            alt="Red de Asistencia Digital Fortalece Pyme Ñuble — CORFO" class="alianza-logo"
+                            loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Fortalece Pyme Ñuble</strong>
+                            <span>Red de Asistencia Digital — CORFO</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="assets/polo.jpg" alt="Polo de Salud — UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Polo de Salud</strong>
+                            <span>Universidad del Bío-Bío (UBB)</span>
+                        </div>
+                    </div>
+
+                    <div class="alianza-item">
+                        <img src="https://eco-sd.cl/static/ecosistema_salud/imgs/logo_ecosistema.png"
+                            alt="Ecosistema de Salud Digital — Encuentro UBB" class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Ecosistema de Salud Digital</strong>
+                            <span>Encuentro CENS</span>
+                        </div>
+                    </div>
                     <div class="alianza-item">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO_pWgkIOIcmYPoRTaLT4g98ohlpIXljwftQ&s"
                             alt="Escuela de Ingeniería Civil Informática — UBB" class="alianza-logo" loading="lazy">
@@ -376,38 +460,11 @@
                             <span>Universidad del Bío-Bío (UBB)</span>
                         </div>
                     </div>
-
-                    <div class="alianza-item">
-                        <img src="https://fpymenuble.cl/wp-content/uploads/2021/11/logo-red-fondo-blanco.jpg"
-                            alt="Red de Asistencia Digital Fortalece Pyme Ñuble — CORFO" class="alianza-logo"
-                            loading="lazy">
-                        <div class="alianza-caption">
-                            <strong>Fortalece Pyme Ñuble</strong>
-                            <span>Red de Asistencia Digital — CORFO</span>
-                        </div>
-                    </div>
-
-                    <div class="alianza-item">
-                        <img src="assets/polo.jpg" alt="Polo de Salud — UBB" class="alianza-logo" loading="lazy">
-                        <div class="alianza-caption">
-                            <strong>Polo de Salud</strong>
-                            <span>Universidad del Bío-Bío (UBB)</span>
-                        </div>
-                    </div>
-
-                    <div class="alianza-item">
-                        <img src="https://eco-sd.cl/static/ecosistema_salud/imgs/logo_ecosistema.png"
-                            alt="Ecosistema de Salud Digital — Encuentro UBB" class="alianza-logo" loading="lazy">
-                        <div class="alianza-caption">
-                            <strong>Ecosistema de Salud Digital</strong>
-                            <span>Encuentro CENS</span>
-                        </div>
-                    </div>
-
                 </div>
-                <button class="carousel-btn next" aria-label="Siguiente" tabindex="0">›</button>
+                <button class="carousel-btn next" aria-label="Siguiente" tabindex="0">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
-
     </section>
 
     <!-- Sección FAQ -->
@@ -416,12 +473,12 @@
             <div class="section-header">
                 <span class="section-subtitle">¿Tienes dudas?</span>
                 <h2 class="section-title">Preguntas Frecuentes</h2>
-                <p class="section-description">Resolvemos las consultas más comunes sobre Vitalink.</p>
+                <p class="section-description">Resolvemos las consultas más comunes sobre Althara.</p>
             </div>
             <div class="faq-container">
                 <div class="faq-item">
                     <button class="faq-question" aria-expanded="false">
-                        <span>¿Vitalink es completamente gratuito?</span>
+                        <span>¿Althara es completamente gratuito?</span>
                         <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -429,8 +486,9 @@
                         </svg>
                     </button>
                     <div class="faq-answer">
-                        <p>Sí, Vitalink es completamente gratuito para todos los profesionales que trabajan en zonas
-                            rurales. Creemos que el acceso al autocuidado no debería tener barreras económicas.</p>
+                        <p>Sí, Althara es completamente gratuito para todos los profesionales que trabajan en zonas
+                            rurales. Creemos que el acceso al desarrollo profesional no debería tener barreras
+                            económicas.</p>
                     </div>
                 </div>
                 <div class="faq-item">
@@ -443,8 +501,8 @@
                         </svg>
                     </button>
                     <div class="faq-answer">
-                        <p>Solo necesitas conexión a internet para registrarte y descargar las cápsulas. Una vez
-                            descargadas, puedes acceder a ellas sin conexión en cualquier momento.</p>
+                        <p>Solo necesitas conexión a internet para registrarte y descargar los recursos. Una vez
+                            descargados, puedes acceder a ellos sin conexión en cualquier momento.</p>
                     </div>
                 </div>
                 <div class="faq-item">
@@ -458,13 +516,13 @@
                     </button>
                     <div class="faq-answer">
                         <p>Consideramos profesional rural a cualquier persona que preste servicios profesionales (salud,
-                            educación, agricultura, etc.) en localidades con menos de 5,000 habitantes o en zonas
+                            educación, servicios públicos, etc.) en localidades con menos de 5,000 habitantes o en zonas
                             geográficamente aisladas.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question" aria-expanded="false">
-                        <span>¿Puedo sugerir temas para nuevas cápsulas?</span>
+                        <span>¿Puedo sugerir temas para nuevos recursos?</span>
                         <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -487,7 +545,7 @@
                         </svg>
                     </button>
                     <div class="faq-answer">
-                        <p>Publicamos nuevas cápsulas cada semana, rotando entre las tres categorías principales.
+                        <p>Publicamos nuevos recursos cada semana, rotando entre las tres categorías principales.
                             También enviamos un boletín mensual con novedades y contenido destacado.</p>
                     </div>
                 </div>
@@ -507,25 +565,32 @@
             <div class="contact-container">
                 <div class="contact-info">
                     <h3>¿En qué podemos ayudarte?</h3>
-                    <p>Estamos aquí para apoyarte en tu camino de autocuidado. Completa el formulario y nos pondremos en
+                    <p>Estamos aquí para apoyarte en tu desarrollo profesional. Completa el formulario y nos pondremos
+                        en
                         contacto contigo a la brevedad.</p>
                     <div class="contact-details">
                         <div class="contact-item">
-                            <div class="contact-icon">📧</div>
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
                             <div>
                                 <strong>Email</strong>
-                                <p>contacto@vitalink.cl</p>
+                                <p>contacto@althara.cl</p>
                             </div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">🕒</div>
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
                             <div>
                                 <strong>Horario de atención</strong>
                                 <p>Lunes a Viernes, 9:00 - 18:00 hrs</p>
                             </div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">📍</div>
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
                             <div>
                                 <strong>Ubicación</strong>
                                 <p>Centro de Recursos para Zonas Rurales</p>
@@ -565,18 +630,20 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="footer-logo">
-                        <span class="logo-icon">💙</span>
-                        Vitalink
+                        <span class="logo-icon">
+                            <img src="assets/new-logo.png" style="width: 50px;">
+                        </span>
+                        Althara
                     </div>
-                    <p>Apoyo para profesionales rurales mediante cápsulas de autocuidado en educación física, salud
-                        mental y medicina.</p>
+                    <p>Plataforma de desarrollo profesional para trabajadores de zonas rurales mediante recursos
+                        educativos especializados.</p>
                     <div class="social-links" aria-label="Redes sociales">
                         <a href="https://facebook.com/tu_pagina" class="social fb" aria-label="Facebook" target="_blank"
                             rel="noopener">
                             <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
                         </a>
-                        <a href="https://www.instagram.com/proyecto_vitalred?igsh=ZHkyeGZ1d2gxNno5" class="social ig" aria-label="Instagram"
-                            target="_blank" rel="noopener">
+                        <a href="https://www.instagram.com/proyecto_vitalred?igsh=ZHkyeGZ1d2gxNno5" class="social ig"
+                            aria-label="Instagram" target="_blank" rel="noopener">
                             <i class="fa-brands fa-instagram" aria-hidden="true"></i>
                         </a>
                         <a href="https://x.com/tu_usuario" class="social tw" aria-label="X (Twitter)" target="_blank"
@@ -595,8 +662,8 @@
                         <ul>
                             <li><a href="#inicio">Inicio</a></li>
                             <li><a href="#beneficios">Beneficios</a></li>
-                            <li><a href="#que-es">Qué es Vitalink</a></li>
-                            <li><a href="#capsulas">Cápsulas</a></li>
+                            <li><a href="#que-es">Qué es Althara</a></li>
+                            <li><a href="#capsulas">Recursos</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
@@ -620,8 +687,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Vitalink. Todos los derechos reservados. | Desarrollado con 💚 para profesionales rurales
-                </p>
+                <p>&copy; 2025 Althara. Todos los derechos reservados. | Desarrollado con dedicación para profesionales
+                    rurales</p>
             </div>
         </div>
     </footer>
@@ -631,8 +698,8 @@
         <div class="modal-content">
             <button class="modal-close" aria-label="Cerrar modal">×</button>
             <div class="auth-header">
-                <h2>Accede a Vitalink</h2>
-                <p>Ingresa a tu cuenta o crea una nueva para acceder a todas las cápsulas.</p>
+                <h2>Accede a Althara</h2>
+                <p>Ingresa a tu cuenta o crea una nueva para acceder a todos los recursos.</p>
             </div>
             <div class="auth-tabs">
                 <button class="tab-btn active" data-tab="login">Iniciar Sesión</button>
@@ -686,8 +753,7 @@
         </div>
     </div>
 
-    <!-- Panel de Usuario (oculto inicialmente) -->
-    <!-- Panel de Usuario (oculto inicialmente) -->
+    <!-- Panel de Usuario -->
     <div id="user-panel" class="user-panel">
         <div class="panel-header">
             <div class="user-info">
@@ -705,7 +771,7 @@
                 <h3>Panel de Administración</h3>
 
                 <div class="admin-section">
-                    <h4>Subir Nueva Cápsula</h4>
+                    <h4>Subir Nuevo Recurso</h4>
                     <form id="upload-form" class="upload-form">
                         <div class="form-group">
                             <label for="capsule-title">Título</label>
@@ -715,9 +781,9 @@
                             <label for="capsule-category">Categoría</label>
                             <select id="capsule-category" required aria-required="true">
                                 <option value="">Selecciona una categoría</option>
-                                <option value="educacion_fisica">Educación Física</option>
-                                <option value="salud_mental">Salud Mental</option>
-                                <option value="medicina">Medicina</option>
+                                <option value="salud_fisica">Salud Física</option>
+                                <option value="bienestar_mental">Bienestar Mental</option>
+                                <option value="competencias_profesionales">Competencias Profesionales</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -733,14 +799,12 @@
                             <input type="file" id="capsule-file" accept=".pdf,.mp4,.mov,.avi,.jpg,.jpeg,.png" required
                                 aria-required="true">
                         </div>
-                        <!-- En el panel de administración, dentro del formulario de subida -->
                         <div class="form-group">
                             <label for="capsule-thumbnail">Miniatura Personalizada (JPG, PNG)</label>
                             <input type="file" id="capsule-thumbnail" accept=".jpg,.jpeg,.png" aria-required="false">
-                            <small class="form-help">Imagen que se mostrará como portada de la cápsula
-                                (opcional)</small>
+                            <small class="form-help">Imagen que se mostrará como portada del recurso (opcional)</small>
                         </div>
-                        <button type="submit" class="btn btn-primary">Subir Cápsula</button>
+                        <button type="submit" class="btn btn-primary">Subir Recurso</button>
                     </form>
                 </div>
 
@@ -755,17 +819,18 @@
             <!-- Panel para usuarios regulares -->
             <div id="regular-panel">
                 <h3>Mi Perfil</h3>
-                <p>Bienvenido a Vitalink. Aquí puedes acceder a todas las cápsulas de autocuidado disponibles.</p>
+                <p>Bienvenido a Althara. Aquí puedes acceder a todos los recursos de desarrollo profesional disponibles.
+                </p>
                 <p>Si necesitas ayuda, no dudes en contactarnos a través del formulario de contacto.</p>
 
                 <div class="user-stats">
                     <div class="user-stat">
                         <span class="user-stat-number">12</span>
-                        <span class="user-stat-label">Cápsulas vistas</span>
+                        <span class="user-stat-label">Recursos vistos</span>
                     </div>
                     <div class="user-stat">
                         <span class="user-stat-number">5</span>
-                        <span class="user-stat-label">Cápsulas descargadas</span>
+                        <span class="user-stat-label">Recursos descargados</span>
                     </div>
                     <div class="user-stat">
                         <span class="user-stat-number">3</span>
@@ -779,6 +844,7 @@
     <!-- Toast/Notificaciones -->
     <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
 
