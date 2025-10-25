@@ -86,9 +86,9 @@ function initHeroNetwork() {
                 if (d2 < MAX_DIST * MAX_DIST) {
                     const alpha = 1 - Math.sqrt(d2) / MAX_DIST;
                     ctx.strokeStyle = `rgba(${lineBase}, ${alpha * 0.55})`;
-                    ctx.lineWidth = 1.6;
+                    ctx.lineWidth = 1.0;
                     ctx.shadowBlur = 6;
-                    ctx.shadowColor = 'rgba(255, 255, 255, 0.55)';
+                    ctx.shadowColor = 'rgba(255, 255, 255, 0.35)';
                     ctx.beginPath();
                     ctx.moveTo(a.x, a.y);
                     ctx.lineTo(b.x, b.y);
