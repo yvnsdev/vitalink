@@ -9,128 +9,22 @@ const ADMIN_EMAILS = ["tomas.yevenesc@gmail.com"];
 let supabase;
 let currentUser = null;
 let capsulesData = [];
+let categoriesCache = [];
 
 // Inicialización cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', async function () {
     await initSupabase();
     initEventListeners();
     checkAuthState();
-    loadCapsules();
+    await loadCapsules();
+    await loadCategories();
     initFAQ();
     initScrollEffects();
     initAlliancesCarousel();
-
-    initHeroNetwork();
+    // initHeroNetwork removed - particles disabled for performance
 });
 
-// --- Red animada del hero (canvas de partículas) ---
-function initHeroNetwork() {
-    const canvas = document.getElementById('hero-network');
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    const DPR = Math.max(1, Math.floor(window.devicePixelRatio || 1));
-    const prefsReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    let particles = [];
-    let W = 0, H = 0;
-    let animationId = null;
-
-    function resize() {
-        // Ajusta tamaño con DPR para nitidez
-        const rect = canvas.getBoundingClientRect();
-        W = Math.floor(rect.width);
-        H = Math.floor(rect.height);
-        canvas.width = W * DPR;
-        canvas.height = H * DPR;
-        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-        spawnParticles();
-    }
-
-    function spawnParticles() {
-        // Densidad por área (ajusta 0.00015 para más/menos)
-        // Reemplaza dentro de spawnParticles()
-        const count = Math.floor(W * H * 0.00009); // antes 0.00015 → menos partículas
-        particles = new Array(count).fill(0).map(() => ({
-            x: Math.random() * W,
-            y: Math.random() * H,
-            vx: (Math.random() - 0.5) * 0.5,   // un poco más lento
-            vy: (Math.random() - 0.5) * 0.5,
-            r: 2.2 + Math.random() * 2.0       // antes ~1.2–2.4 → ahora 2.2–4.2 px
-        }));
-    }
-
-    function step() {
-        ctx.clearRect(0, 0, W, H);
-
-        // Fondo sutil para “ghosting” (opcional)
-        // ctx.fillStyle = 'rgba(0,0,0,0.02)';
-        // ctx.fillRect(0,0,W,H);
-
-        // Mover y rebotar
-        for (const p of particles) {
-            p.x += p.vx; p.y += p.vy;
-            if (p.x <= 0 || p.x >= W) p.vx *= -1;
-            if (p.y <= 0 || p.y >= H) p.vy *= -1;
-        }
-
-        // Dibujar conexiones
-        const MAX_DIST = 180; // píxeles
-        // color acorde a tu paleta (azules)
-        const lineBase = '34, 87, 214'; // rgb del primario aprox
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const a = particles[i], b = particles[j];
-                const dx = a.x - b.x, dy = a.y - b.y;
-                const d2 = dx * dx + dy * dy;
-                if (d2 < MAX_DIST * MAX_DIST) {
-                    const alpha = 1 - Math.sqrt(d2) / MAX_DIST;
-                    ctx.strokeStyle = `rgba(${lineBase}, ${alpha * 0.55})`;
-                    ctx.lineWidth = 1.0;
-                    ctx.shadowBlur = 6;
-                    ctx.shadowColor = 'rgba(255, 255, 255, 0.35)';
-                    ctx.beginPath();
-                    ctx.moveTo(a.x, a.y);
-                    ctx.lineTo(b.x, b.y);
-                    ctx.stroke();
-                }
-            }
-        }
-
-        // Dibujar nodos
-        ctx.fillStyle = 'rgba(255,255,255,0.85)';
-        for (const p of particles) {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        animationId = requestAnimationFrame(step);
-    }
-
-    // Iniciar / detener respetando reduced-motion y visibilidad
-    function start() {
-        if (prefsReduced.matches) return;
-        cancelAnimationFrame(animationId);
-        step();
-    }
-    function stop() { cancelAnimationFrame(animationId); }
-
-    // Observadores
-    const onVisibility = () => (document.hidden ? stop() : start());
-    document.addEventListener('visibilitychange', onVisibility);
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => { resize(); start(); }, 120);
-    });
-    prefsReduced.addEventListener?.('change', () => (prefsReduced.matches ? stop() : start()));
-
-    // Bootstrap
-    resize();
-    start();
-}
+// Hero particles removed to improve performance
 
 // Inicializar cliente Supabase
 async function initSupabase() {
@@ -617,6 +511,58 @@ async function loadCapsules() {
     }
 }
 
+// Cargar categorías desde Supabase (o derivar de capsules) y poblar select + filtro
+async function loadCategories() {
+    const datalist = document.getElementById('categories-datalist');
+    const categorySelect = document.getElementById('category-select');
+
+    try {
+        if (typeof supabase !== 'undefined' && supabase) {
+            const { data, error } = await supabase.from('categories').select('*').order('name', { ascending: true });
+            if (!error && data) {
+                // almacenar como objetos {slug, name}
+                categoriesCache = data.map(c => ({ slug: c.slug, name: c.name }));
+            }
+        }
+    } catch (err) {
+        console.warn('No se pudo cargar categories desde Supabase, usando fallback', err);
+    }
+
+    // Si no tenemos categories en DB, derivar de capsulesData
+    if (!categoriesCache || categoriesCache.length === 0) {
+        const map = new Map();
+        (capsulesData || []).forEach(c => {
+            if (c.category) {
+                const slug = c.category;
+                if (!map.has(slug)) map.set(slug, { slug, name: getCategoryName(slug) });
+            }
+        });
+        categoriesCache = Array.from(map.values());
+    }
+
+    // Poblar datalist (si existe) — mantenido por compatibilidad
+    if (datalist) {
+        datalist.innerHTML = categoriesCache.map(cat => `<option value="${cat.slug}"></option>`).join('');
+    }
+
+    // Poblar select de filtro (si existe)
+    if (categorySelect) {
+        const current = categorySelect.value || 'todas';
+        categorySelect.innerHTML = '<option value="todas">Todas las categorías</option>' +
+            categoriesCache.map(cat => `<option value="${cat.slug}">${cat.name}</option>`).join('');
+        categorySelect.value = current;
+    }
+
+    // Poblar select del formulario de subida (capsule-category) si existe
+    const uploadSelect = document.getElementById('capsule-category');
+    if (uploadSelect) {
+        const currentUpload = uploadSelect.value || '';
+        uploadSelect.innerHTML = '<option value="">Selecciona una categoría</option>' +
+            categoriesCache.map(cat => `<option value="${cat.slug}">${cat.name}</option>`).join('');
+        if (currentUpload) uploadSelect.value = currentUpload;
+    }
+}
+
 // Obtener recursos de ejemplo (mock)
 function getMockCapsulas() {
     return [];
@@ -655,10 +601,11 @@ function renderCapsules(capsules) {
                 <div class="capsula-meta">
                     <span class="capsula-duration">⏱ ${capsule.duration_minutes} min</span>
                     ${isVideo ?
-                `<button class="btn btn-primary btn-small play-video-btn" 
-                                data-video-url="${capsule.public_url}">
-                            Reproducir Video
-                         </button>` :
+                    `<button class="btn btn-primary btn-small play-video-btn" 
+                                    data-video-url="${capsule.public_url}"
+                                    data-thumbnail-url="${capsule.thumbnail_url || ''}">
+                                Reproducir Video
+                             </button>` :
                 `<a href="${capsule.public_url || '#'}" class="btn btn-primary btn-small" target="_blank">
                             Ver/Descargar
                          </a>`
@@ -669,11 +616,14 @@ function renderCapsules(capsules) {
         `;
     }).join('');
 
-    // Agregar event listeners para los botones de video
+    // Agregar event listeners para los botones de video (mejorado)
     document.querySelectorAll('.play-video-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             const videoUrl = this.getAttribute('data-video-url');
-            openVideoModal(videoUrl);
+            const thumbnail = this.getAttribute('data-thumbnail-url') || '';
+            const card = this.closest('.capsula-card');
+            const title = card?.querySelector('.capsula-title')?.textContent || '';
+            openVideoModal({ videoUrl, thumbnailUrl: thumbnail, title });
         });
     });
 
@@ -684,15 +634,23 @@ function renderCapsules(capsules) {
 }
 
 // Función para abrir modal de video
-function openVideoModal(videoUrl) {
-    // Crear modal de video
+function openVideoModal({ videoUrl, thumbnailUrl = '', title = '' } = {}) {
+    if (!videoUrl) return;
+
+    // Crear modal accesible y mejorado para video
     const videoModal = document.createElement('div');
-    videoModal.className = 'modal active';
+    videoModal.className = 'modal active modal-video';
+    videoModal.setAttribute('role', 'dialog');
+    videoModal.setAttribute('aria-modal', 'true');
     videoModal.innerHTML = `
-        <div class="modal-content" style="max-width: 800px;">
-            <button class="modal-close" onclick="this.parentElement.parentElement.remove()">×</button>
+        <div class="modal-content" style="max-width: 900px;">
+            <button class="modal-close" aria-label="Cerrar modal">×</button>
+            <div class="video-meta" style="margin-bottom:0.75rem;">
+                <strong class="video-title">${title || ''}</strong>
+            </div>
             <div class="video-container">
-                <video controls style="width: 100%; border-radius: 8px;">
+                <div class="video-spinner" aria-hidden="true"></div>
+                <video class="player" controls preload="metadata" playsinline style="width:100%; height:auto; display:block; background:#000; border-radius:8px;">
                     <source src="${videoUrl}" type="video/mp4">
                     Tu navegador no soporta el elemento de video.
                 </video>
@@ -703,14 +661,88 @@ function openVideoModal(videoUrl) {
         </div>
     `;
 
+    // Añadir poster si existe
+    if (thumbnailUrl) {
+        const temp = document.createElement('video');
+        temp.setAttribute('poster', thumbnailUrl);
+        // set poster on actual video after it's inserted
+    }
+
     document.body.appendChild(videoModal);
 
-    // Cerrar modal al hacer clic fuera
+    // Evitar scroll de fondo
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const modalContent = videoModal.querySelector('.modal-content');
+    const closeBtn = videoModal.querySelector('.modal-close');
+    const player = videoModal.querySelector('.player');
+    const spinner = videoModal.querySelector('.video-spinner');
+
+    // Apply poster if provided
+    if (thumbnailUrl) player.setAttribute('poster', thumbnailUrl);
+
+    // Autoplay on user gesture
+    player.play().catch(()=>{});
+
+    // Show spinner until canplay
+    const onCanPlay = () => {
+        spinner.style.display = 'none';
+        player.classList.add('ready');
+        player.play().catch(()=>{});
+    };
+
+    const onWaiting = () => { spinner.style.display = 'block'; };
+    const onPlaying = () => { spinner.style.display = 'none'; };
+
+    player.addEventListener('canplay', onCanPlay);
+    player.addEventListener('playing', onPlaying);
+    player.addEventListener('waiting', onWaiting);
+
+    // Close handlers
+    function closeModal() {
+        // remove listeners
+        player.pause();
+        player.removeEventListener('canplay', onCanPlay);
+        player.removeEventListener('playing', onPlaying);
+        player.removeEventListener('waiting', onWaiting);
+        document.removeEventListener('keydown', onKeyDown);
+        videoModal.remove();
+        document.body.style.overflow = previousOverflow;
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+
+    // Cerrar modal al hacer clic fuera del contenido
     videoModal.addEventListener('click', (e) => {
-        if (e.target === videoModal) {
-            videoModal.remove();
-        }
+        if (e.target === videoModal) closeModal();
     });
+
+    // Teclas de acceso: Esc cierra, espacio play/pause, flechas seek
+    function onKeyDown(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+            return;
+        }
+        if (e.key === ' ' || e.code === 'Space') {
+            e.preventDefault();
+            if (player.paused) player.play(); else player.pause();
+            return;
+        }
+        if (e.key === 'ArrowRight') {
+            player.currentTime = Math.min(player.duration || Infinity, player.currentTime + 5);
+            return;
+        }
+        if (e.key === 'ArrowLeft') {
+            player.currentTime = Math.max(0, player.currentTime - 5);
+            return;
+        }
+    }
+
+    document.addEventListener('keydown', onKeyDown);
+
+    // Focus inicial en botón cerrar
+    closeBtn.focus();
 }
 
 // Obtener icono por categoría
@@ -731,8 +763,17 @@ function getCategoryName(category) {
         'bienestar_mental': 'Bienestar Mental',
         'competencias_profesionales': 'Competencias Profesionales'
     };
+    if (!category) return '';
 
-    return names[category] || category;
+    // If we have a mapping, return it
+    if (names[category]) return names[category];
+
+    // Otherwise, transform slug-like strings to readable names:
+    // - replace underscores and hyphens with spaces
+    // - collapse multiple spaces
+    // - trim and title-case each word
+    const cleaned = category.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+    return cleaned.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
 // Filtrar recursos
@@ -764,7 +805,7 @@ function filterCapsules() {
 }
 
 // Manejar envío de formulario de contacto
-function handleContact(e) {
+async function handleContact(e) {
     e.preventDefault();
 
     // Mostrar estado de carga
@@ -773,15 +814,50 @@ function handleContact(e) {
     submitBtn.textContent = 'Enviando...';
     submitBtn.disabled = true;
 
-    // Simular envío (en una implementación real, aquí se enviaría a un backend)
-    setTimeout(() => {
-        showToast('Mensaje enviado correctamente. Te contactaremos pronto.', 'success');
-        e.target.reset();
+    // Recoger valores y validación sencilla
+    const name = (document.getElementById('name')?.value || '').trim();
+    const email = (document.getElementById('email')?.value || '').trim();
+    const subject = (document.getElementById('subject')?.value || '').trim();
+    const message = (document.getElementById('message')?.value || '').trim();
 
+    if (!name || !email || !message) {
+        showToast('Por favor completa los campos requeridos (nombre, email y mensaje).', 'error');
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        return;
+    }
+
+    try {
+        // Si Supabase está inicializado, guardar en la tabla 'contacts'
+        if (typeof supabase !== 'undefined' && supabase) {
+            const payload = {
+                name,
+                email,
+                subject,
+                message,
+                owner: currentUser ? currentUser.id : null,
+                created_at: new Date().toISOString()
+            };
+
+            const { data, error } = await supabase.from('contacts').insert([payload]);
+            if (error) throw error;
+
+            showToast('Mensaje enviado correctamente. Te contactaremos pronto.', 'success');
+            e.target.reset();
+        } else {
+            // Fallback: simulación local rápida
+            await new Promise(res => setTimeout(res, 900));
+            showToast('Mensaje enviado correctamente (modo local).', 'success');
+            e.target.reset();
+        }
+    } catch (err) {
+        console.error('Error enviando contacto:', err);
+        showToast('Error al enviar el mensaje: ' + (err.message || err), 'error');
+    } finally {
         // Restaurar botón
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-    }, 1500);
+    }
 }
 
 // Manejar subida de recurso

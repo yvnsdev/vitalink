@@ -1497,6 +1497,34 @@ body {
   overflow: hidden;
 }
 
+/* Spinner dentro del modal de video */
+.video-spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 5px solid rgba(255,255,255,0.15);
+  border-top-color: rgba(255,255,255,0.9);
+  animation: spin 1s linear infinite;
+  z-index: 3;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Ajustes para modal de video más grande */
+.modal-video .modal-content {
+  max-width: 1000px;
+  padding: 1rem;
+}
+
+.modal-video .video-container { position: relative; }
+.modal-video .player { width: 100%; height: auto; max-height: 80vh; display: block; }
+
 /* Botón de reproducir video */
 .play-video-btn {
   cursor: pointer;
@@ -1998,6 +2026,32 @@ body {
 .how-it-works .step-number{
   width: var(--step-circle);
   height: var(--step-circle);
+}
+
+/* Respaldo académico: aumentar tamaño de las imágenes de avatar en la sección #respaldo */
+#respaldo .testimonial-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 9999px; /* mantener aspecto circular */
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid rgba(0,0,0,0.06);
+  background: #fff;
+}
+
+#respaldo .testimonial-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Ajuste responsivo: en pantallas pequeñas mantener tamaño más moderado */
+@media (max-width: 767px) {
+  #respaldo .testimonial-avatar {
+    width: 80px;
+    height: 80px;
+  }
 }
 .how-it-works .steps::before,
 .how-it-works .steps::after{

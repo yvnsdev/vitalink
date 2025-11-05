@@ -36,7 +36,7 @@
                 <li><a href="#beneficios" class="nav-link">Beneficios</a></li>
                 <li><a href="#que-es" class="nav-link">Qué Somos</a></li>
                 <li><a href="#capsulas" class="nav-link">Recursos</a></li>
-                <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
+                <!-- <li><a href="#testimonios" class="nav-link">Testimonios</a></li> -->
                 <li><a href="#alianzas" class="nav-link">Alianzas</a></li>
                 <li><a href="#faq" class="nav-link">FAQ</a></li>
                 <li><a href="#contacto" class="nav-link">Contacto</a></li>
@@ -50,9 +50,8 @@
     <!-- Sección Inicio/Hero -->
     <section id="inicio" class="hero">
         <div class="hero-overlay"></div>
-        <div class="hero-background">
-            <canvas id="hero-network"></canvas>
-        </div>
+        <!-- Hero visual simplificado (partículas removidas) -->
+        <div class="hero-background" aria-hidden="true"></div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">Plataforma de Desarrollo Profesional</div>
@@ -292,7 +291,7 @@
         </div>
     </section>
 
-    <!-- Sección Testimonios -->
+    <!-- Sección Testimonios
     <section id="testimonios" class="section bg-light">
         <div class="container">
             <div class="section-header">
@@ -366,7 +365,7 @@
                     </div>
                 </div>
             </div>
-    </section>
+    </section> -->
 
     <!-- Sección Alianzas -->
     <section id="alianzas" class="section">
@@ -392,7 +391,7 @@
                         </div>
                     </div>
                     <div class="alianza-item">
-                        <img src="https://fpymenuble.cl/wp-content/uploads/2021/11/logo-red-fondo-blanco.jpg"
+                        <img src="assets/fpyme.png"
                             alt="Red de Asistencia Digital Fortalece Pyme Ñuble — CORFO" class="alianza-logo"
                             loading="lazy">
                         <div class="alianza-caption">
@@ -648,7 +647,16 @@
                             </div>
                             <div>
                                 <strong>Email</strong>
-                                <p>contacto@althara.cl</p>
+                                <p><a href="mailto:soporte.althara@gmail.com">soporte.althara@gmail.com</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <strong>Teléfono</strong>
+                                <p><a href="tel:+56977029753">+56 9 7702 9753</a></p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -666,7 +674,8 @@
                             </div>
                             <div>
                                 <strong>Ubicación</strong>
-                                <p>Centro de Recursos para Zonas Rurales</p>
+                                <p>Campus Fernando May, Universidad del Bio-Bio</p>
+                                <p>Avenida Andres Bello, 720</p>
                             </div>
                         </div>
                     </div>
@@ -852,11 +861,10 @@
                         </div>
                         <div class="form-group">
                             <label for="capsule-category">Categoría</label>
+                            <!-- Select poblado dinámicamente desde la base de datos: solo seleccionar, no escribir -->
                             <select id="capsule-category" required aria-required="true">
                                 <option value="">Selecciona una categoría</option>
-                                <option value="salud_fisica">Salud Física</option>
-                                <option value="bienestar_mental">Bienestar Mental</option>
-                                <option value="competencias_profesionales">Competencias Profesionales</option>
+                                <!-- Opciones se inyectan por script -->
                             </select>
                         </div>
                         <div class="form-group">
