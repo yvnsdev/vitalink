@@ -50,8 +50,20 @@
     <!-- Sección Inicio/Hero -->
     <section id="inicio" class="hero">
         <div class="hero-overlay"></div>
-        <!-- Hero visual simplificado (partículas removidas) -->
-        <div class="hero-background" aria-hidden="true"></div>
+        <!-- Hero visual simplificado (carrusel de fondo) -->
+        <div class="hero-background" aria-hidden="true">
+            <div class="hero-slides" aria-hidden="true">
+                <div class="hero-slide"
+                    style="background-image: url('https://cdn.lecturio.com/assets/Featured-image-Student-Blog-Hospital-Team.jpg')"
+                    data-index="0"></div>
+                <div class="hero-slide"
+                    style="background-image: url('https://centromedicoabc.com/wp-content/uploads/2024/11/ejercicios-en-su-rodilla.webp')"
+                    data-index="1"></div>
+                <div class="hero-slide"
+                    style="background-image: url('https://cuidateplus.marca.com/sites/default/files/styles/natural/public/cms/2023-07/psicologo-psiquiatra.jpg.webp?itok=EgelU3SD')"
+                    data-index="2"></div>
+            </div>
+        </div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">Plataforma de Desarrollo Profesional</div>
@@ -101,46 +113,48 @@
                     <div class="benefit-icon">
                         <i class="fas fa-clock"></i>
                     </div>
-                    <h3>Contenido Accesible</h3>
-                    <p>Recursos educativos breves de 5-15 minutos que se adaptan a agendas complejas y limitaciones de
-                        tiempo.</p>
+                    <h3>Contenidos Breves y Útiles</h3>
+                    <p>Micro-lecciones de 5–15 minutos pensadas para integrar en jornadas ocupadas.</p>
+                    <ul class="benefit-features">
+                        <li>Aprende en pausas cortas</li>
+                        <li>Formatos prácticos: video, guía y checklist</li>
+                    </ul>
                 </div>
+
                 <div class="benefit-card">
                     <div class="benefit-icon">
                         <i class="fas fa-wifi"></i>
                     </div>
-                    <h3>Acceso Sin Conexión</h3>
-                    <p>Descarga los recursos y accede a ellos incluso sin conexión a internet estable, ideal para zonas
-                        remotas.</p>
+                    <h3>Acceso Offline</h3>
+                    <p>Descarga materiales para usarlos sin conexión en zonas con conectividad limitada.</p>
+                    <ul class="benefit-features">
+                        <li>Descargas ligeras</li>
+                        <li>Reproducción sin datos</li>
+                    </ul>
                 </div>
+
                 <div class="benefit-card">
                     <div class="benefit-icon">
-                        <i class="fas fa-bullseye"></i>
+                        <i class="fas fa-tools"></i>
                     </div>
-                    <h3>Enfoque Práctico</h3>
-                    <p>Conocimientos y técnicas aplicables inmediatamente en tu contexto laboral específico.</p>
+                    <h3>Herramientas Prácticas</h3>
+                    <p>Protocolos y técnicas aplicables inmediatamente en tu trabajo diario.</p>
+                    <ul class="benefit-features">
+                        <li>Guías paso a paso</li>
+                        <li>Plantillas y materiales listos para usar</li>
+                    </ul>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3>Adaptado al Contexto Rural</h3>
-                    <p>Contenido desarrollado considerando realidades, recursos y desafíos específicos de entornos
-                        rurales.</p>
-                </div>
+
                 <div class="benefit-card">
                     <div class="benefit-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <h3>Comunidad Profesional</h3>
-                    <p>Conecta e intercambia experiencias con otros profesionales en situaciones similares.</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3>Desarrollo Continuo</h3>
-                    <p>Actualización constante de contenidos para mantener tus competencias profesionales al día.</p>
+                    <h3>Comunidad y Apoyo Local</h3>
+                    <p>Red de colegas y expertos para compartir experiencias y soporte práctico.</p>
+                    <ul class="benefit-features">
+                        <li>Foros y chats por región</li>
+                        <li>Eventos y talleres locales</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -202,6 +216,19 @@
                                     <li>Desarrollo de competencias</li>
                                 </ul>
                             </div>
+                            <div class="focus-item">
+                                <span class="focus-icon">
+                                    <i class="fas fa-hands-helping"></i>
+                                </span>
+                                <h4>Formación Comunitaria</h4>
+                                <p>Recursos y herramientas para fortalecer el trabajo en red y la colaboración local,
+                                    facilitando proyectos comunitarios y transferencia de conocimientos.</p>
+                                <ul class="focus-features">
+                                    <li>Metodologías participativas</li>
+                                    <li>Gestión de proyectos locales</li>
+                                    <li>Articulación con actores territoriales</li>
+                                </ul>
+                            </div>
                         </div>
 
                         <div class="how-it-works">
@@ -211,24 +238,35 @@
                                     <div class="step-number">1</div>
                                     <div class="step-content">
                                         <h4>Regístrate Gratis</h4>
-                                        <p>Crea tu cuenta verificada en menos de 2 minutos con tu correo electrónico
-                                            profesional.</p>
+                                        <p>Crea tu cuenta verificada en menos de 2 minutos.</p>
                                     </div>
                                 </div>
                                 <div class="step">
                                     <div class="step-number">2</div>
                                     <div class="step-content">
                                         <h4>Explora Recursos</h4>
-                                        <p>Accede a nuestra biblioteca categorizada o utiliza el buscador avanzado para
-                                            encontrar contenido relevante.</p>
+                                        <p>Accede a nuestra biblioteca categorizada.</p>
                                     </div>
                                 </div>
                                 <div class="step">
                                     <div class="step-number">3</div>
                                     <div class="step-content">
                                         <h4>Aprende y Aplica</h4>
-                                        <p>Visualiza o descarga los recursos y aplica los conocimientos inmediatamente
-                                            en tu práctica profesional.</p>
+                                        <p>Visualiza o descarga los recursos.</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <h4>Comparte y Conecta</h4>
+                                        <p>Comparte experiencias y resultados con colegas.</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">5</div>
+                                    <div class="step-content">
+                                        <h4>Mide Impacto</h4>
+                                        <p>Accede a reportes sencillos sobre uso y resultados.</p>
                                     </div>
                                 </div>
                             </div>
@@ -377,9 +415,7 @@
                     en zonas rurales.</p>
             </div>
             <div class="alianzas-carousel" id="alianzas-carousel">
-                <button class="carousel-btn prev" aria-label="Anterior" tabindex="0">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
+                <!-- Controles manuales eliminados (autoscroll activo) -->
 
                 <div class="carousel-track" role="region" aria-label="Carrusel de entidades" tabindex="0">
                     <div class="alianza-item">
@@ -391,9 +427,16 @@
                         </div>
                     </div>
                     <div class="alianza-item">
-                        <img src="assets/fpyme.png"
-                            alt="Red de Asistencia Digital Fortalece Pyme Ñuble — CORFO" class="alianza-logo"
-                            loading="lazy">
+                        <img src="https://econ4everyone.uchicago.edu/wp-content/uploads/2025/05/UDD_logo_updated_smaller.png" alt="Impulso UDD"
+                            class="alianza-logo" loading="lazy">
+                        <div class="alianza-caption">
+                            <strong>Impulso Emprendedor UDD</strong>
+                            <span>Universidad del Desarrollo</span>
+                        </div>
+                    </div>
+                    <div class="alianza-item">
+                        <img src="assets/fpyme.png" alt="Red de Asistencia Digital Fortalece Pyme Ñuble — CORFO"
+                            class="alianza-logo" loading="lazy">
                         <div class="alianza-caption">
                             <strong>Fortalece Pyme Ñuble</strong>
                             <span>Red de Asistencia Digital — CORFO</span>
@@ -471,9 +514,6 @@
                         </div>
                     </div>
                 </div>
-                <button class="carousel-btn next" aria-label="Siguiente" tabindex="0">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
             </div>
     </section>
 
@@ -493,12 +533,9 @@
                             alt="Dra. Carola Figueroa — UBB">
                     </div>
                     <div class="testimonial-content">
-                        <p>"Althara representa una iniciativa innovadora que conecta la formación profesional con el
-                            compromiso
-                            territorial. Es un ejemplo de cómo la educación puede generar impacto real en zonas
-                            rurales."</p>
+                        <p>"Iniciativa que conecta formación profesional con compromiso territorial."</p>
                         <div class="testimonial-author">
-                            <strong>Dra. Carola Figueroa</strong>
+                            <strong>Dra. Carola Figueroa Flores</strong>
                             <span>Académica — FACE, Universidad del Bío-Bío</span>
                         </div>
                     </div>
@@ -510,9 +547,8 @@
                             alt="Mg. Aurora Henriquez Melgarejo — UBB">
                     </div>
                     <div class="testimonial-content">
-                        <p>"El enfoque interdisciplinario de Althara potencia el desarrollo humano y profesional de las
-                            comunidades
-                            rurales, fortaleciendo la equidad en el acceso al conocimiento."</p>
+                        <p>"El enfoque interdisciplinario potencia el desarrollo profesional y la equidad en el acceso al
+                            conocimiento."</p>
                         <div class="testimonial-author">
                             <strong>Mg. Aurora Henriquez Melgarejo</strong>
                             <span>Académica — FACSA, Universidad del Bío-Bío</span>
@@ -526,12 +562,23 @@
                             alt="Dr. Claudio Hernandez Mosqueira — UBB">
                     </div>
                     <div class="testimonial-content">
-                        <p>"Iniciativas como Althara son esenciales para acercar la educación continua y el bienestar
-                            laboral a los
-                            profesionales que sostienen el desarrollo en territorios apartados."</p>
+                        <p>"Esencial para acercar educación continua y bienestar laboral en zonas apartadas."</p>
                         <div class="testimonial-author">
                             <strong>Dr. Claudio Hernández Mosqueira</strong>
                             <span>Académico — FEDUH, Universidad del Bío-Bío</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQoNxjNeAB3F568Y2BEae6oHRkahJmuBiMQA&s"
+                            alt="Prof. Antonio Ruiz Sumaret">
+                    </div>
+                    <div class="testimonial-content">
+                        <p>"El compromiso institucional garantiza calidad técnica y pertinencia territorial."</p>
+                        <div class="testimonial-author">
+                            <strong>Prof. Antonio Ruiz Sumaret</strong>
+                            <span>Encargado de proyectos estudiantiles - Universidad del Bio-Bio</span>
                         </div>
                     </div>
                 </div>
@@ -548,81 +595,94 @@
                 <p class="section-description">Resolvemos las consultas más comunes sobre Althara.</p>
             </div>
             <div class="faq-container">
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>¿Althara es completamente gratuito?</span>
-                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Sí, Althara es completamente gratuito para todos los profesionales que trabajan en zonas
-                            rurales. Creemos que el acceso al desarrollo profesional no debería tener barreras
-                            económicas.</p>
+                <div class="faq-grid">
+                    <div class="faq-image" aria-hidden="true">
+                        <img src="https://phuongnamvina.com/img_data/images/cau-hoi-thuong-gap-faq.jpg"
+                            alt="Personas colaborando" loading="lazy">
                     </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>¿Necesito conexión a internet para acceder al contenido?</span>
-                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Solo necesitas conexión a internet para registrarte y descargar los recursos. Una vez
-                            descargados, puedes acceder a ellos sin conexión en cualquier momento.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>¿Cómo se determina si soy un profesional rural?</span>
-                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Consideramos profesional rural a cualquier persona que preste servicios profesionales (salud,
-                            educación, servicios públicos, etc.) en localidades con menos de 5,000 habitantes o en zonas
-                            geográficamente aisladas.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>¿Puedo sugerir temas para nuevos recursos?</span>
-                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <div class="faq-answer">
-                        <p>¡Absolutamente! Valoramos mucho las sugerencias de nuestra comunidad. Puedes enviarnos tus
-                            ideas a través del formulario de contacto o directamente desde tu perfil si ya tienes una
-                            cuenta.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false">
-                        <span>¿Con qué frecuencia se publica nuevo contenido?</span>
-                        <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Publicamos nuevos recursos cada semana, rotando entre las tres categorías principales.
-                            También enviamos un boletín mensual con novedades y contenido destacado.</p>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <button class="faq-question" aria-expanded="false">
+                                <span>¿Althara es completamente gratuito?</span>
+                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Sí, Althara es completamente gratuito para todos los profesionales que trabajan en
+                                    zonas
+                                    rurales. Creemos que el acceso al desarrollo profesional no debería tener barreras
+                                    económicas.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" aria-expanded="false">
+                                <span>¿Necesito conexión a internet para acceder al contenido?</span>
+                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Solo necesitas conexión a internet para registrarte y descargar los recursos. Una vez
+                                    descargados, puedes acceder a ellos sin conexión en cualquier momento.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" aria-expanded="false">
+                                <span>¿Cómo se determina si soy un profesional rural?</span>
+                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Consideramos profesional rural a cualquier persona que preste servicios profesionales
+                                    (salud,
+                                    educación, servicios públicos, etc.) en localidades con menos de 5,000 habitantes o
+                                    en zonas
+                                    geográficamente aisladas.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" aria-expanded="false">
+                                <span>¿Puedo sugerir temas para nuevos recursos?</span>
+                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer">
+                                <p>¡Absolutamente! Valoramos mucho las sugerencias de nuestra comunidad. Puedes
+                                    enviarnos tus
+                                    ideas a través del formulario de contacto o directamente desde tu perfil si ya
+                                    tienes una
+                                    cuenta.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" aria-expanded="false">
+                                <span>¿Con qué frecuencia se publica nuevo contenido?</span>
+                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Publicamos nuevos recursos cada semana, rotando entre las tres categorías
+                                    principales.
+                                    También enviamos un boletín mensual con novedades y contenido destacado.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- Sección Contacto -->
@@ -675,7 +735,7 @@
                             <div>
                                 <strong>Ubicación</strong>
                                 <p>Campus Fernando May, Universidad del Bio-Bio</p>
-                                <p>Avenida Andres Bello, 720</p>
+                                <p>Avenida Andres Bello, 720 - Oficina 17</p>
                             </div>
                         </div>
                     </div>
@@ -702,6 +762,13 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-full">Enviar mensaje</button>
                 </form>
+                <!-- Mapa embebido (responsive) -->
+                <div class="contact-map" aria-hidden="false">
+                    <iframe
+                        src="https://www.google.com/maps?q=Avenida+Andres+Bello+720+Universidad+del+Bio-Bio&output=embed"
+                        width="600" height="360" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade" title="Mapa — Universidad del Bío-Bío"></iframe>
+                </div>
             </div>
         </div>
     </section>

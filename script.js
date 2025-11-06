@@ -21,8 +21,53 @@ document.addEventListener('DOMContentLoaded', async function () {
     initFAQ();
     initScrollEffects();
     initAlliancesCarousel();
+    initHeroCarousel();
     // initHeroNetwork removed - particles disabled for performance
 });
+
+// Inicializar carrusel del hero (fondo)
+function initHeroCarousel() {
+    const slides = document.querySelectorAll('.hero-slide');
+    if (!slides || slides.length === 0) return;
+
+    let current = 0;
+    const total = slides.length;
+    const intervalTime = 6000;
+    let timer = null;
+
+    const show = (index) => {
+        slides.forEach(s => s.classList.remove('active'));
+        const slide = slides[index];
+        if (slide) slide.classList.add('active');
+        current = index;
+    };
+
+    const next = () => show((current + 1) % total);
+    const prev = () => show((current - 1 + total) % total);
+
+    // start
+    show(0);
+    timer = setInterval(next, intervalTime);
+
+    // controls
+    const btnNext = document.querySelector('.hero-next');
+    const btnPrev = document.querySelector('.hero-prev');
+
+    if (btnNext) btnNext.addEventListener('click', () => { next(); resetTimer(); });
+    if (btnPrev) btnPrev.addEventListener('click', () => { prev(); resetTimer(); });
+
+    // pause on hover
+    const bg = document.querySelector('.hero-background');
+    if (bg) {
+        bg.addEventListener('mouseenter', () => clearInterval(timer));
+        bg.addEventListener('mouseleave', () => { timer = setInterval(next, intervalTime); });
+    }
+
+    function resetTimer() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(next, intervalTime);
+    }
+}
 
 // Hero particles removed to improve performance
 
@@ -1163,24 +1208,86 @@ function initAlliancesCarousel() {
     const prev = root.querySelector('.prev');
     const next = root.querySelector('.next');
 
-    // Mostrar flechas solo si hay más de 5 logos
+    // Mostrar flechas solo si hay más de 5 logos (pero pueden no existir si se han eliminado del DOM)
     const items = track.querySelectorAll('.alianza-item');
     const showArrows = items.length > 5;
-    prev.style.display = next.style.display = showArrows ? 'block' : 'none';
+    if (prev && next) {
+        prev.style.display = showArrows ? 'block' : 'none';
+        next.style.display = showArrows ? 'block' : 'none';
+
+        prev.addEventListener('click', () => {
+            track.scrollBy({ left: -pageScroll(), behavior: 'smooth' });
+        });
+        next.addEventListener('click', () => {
+            track.scrollBy({ left: pageScroll(), behavior: 'smooth' });
+        });
+    }
 
     const pageScroll = () => track.clientWidth * 0.9;
 
-    prev.addEventListener('click', () => {
-        track.scrollBy({ left: -pageScroll(), behavior: 'smooth' });
-    });
-    next.addEventListener('click', () => {
-        track.scrollBy({ left: pageScroll(), behavior: 'smooth' });
-    });
+    // --- Autoscroll (autoplay) ---
+    // Avanza automáticamente cada intervalo; se pausa al hover/touch y se reanuda al salir.
+    const autoInterval = 3500; // ms
+    let autoTimer = null;
 
-    // Accesibilidad con teclado dentro del carrusel
+    function startAuto() {
+        if (autoTimer) return;
+        autoTimer = setInterval(() => {
+            // Si estamos al final, volver al inicio (loop continuo)
+            const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+            const isAtEnd = track.scrollLeft >= (maxScrollLeft - 8);
+            if (isAtEnd) {
+                // Volver al inicio suavemente
+                try {
+                    track.scrollTo({ left: 0, behavior: 'smooth' });
+                } catch (e) {
+                    // fallback
+                    track.scrollLeft = 0;
+                }
+            } else {
+                // Avanzar una 'página' horizontal
+                track.scrollBy({ left: pageScroll(), behavior: 'smooth' });
+            }
+        }, autoInterval);
+    }
+
+    function stopAuto() {
+        if (!autoTimer) return;
+        clearInterval(autoTimer);
+        autoTimer = null;
+    }
+
+    function resetAuto() {
+        stopAuto();
+        // reanudar tras un pequeño delay para evitar choque con el scroll manual
+        setTimeout(startAuto, 800);
+    }
+
+    // Iniciar autoscroll si hay suficientes items
+    if (items.length > 1) startAuto();
+
+    // Pausar al hover (mouse) y en touch devices
+    root.addEventListener('mouseenter', stopAuto);
+    root.addEventListener('mouseleave', startAuto);
+    root.addEventListener('touchstart', stopAuto, { passive: true });
+    root.addEventListener('touchend', () => setTimeout(startAuto, 500), { passive: true });
+
+    // Reiniciar autoscroll cuando el usuario use las flechas (solo si existen)
+    if (prev && next) {
+        prev.addEventListener('click', resetAuto);
+        next.addEventListener('click', resetAuto);
+    }
+
+    // Accesibilidad con teclado dentro del carrusel: usar scroll directo (evita dependencias en botones)
     track.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') prev.click();
-        if (e.key === 'ArrowRight') next.click();
+        if (e.key === 'ArrowLeft') {
+            track.scrollBy({ left: -pageScroll(), behavior: 'smooth' });
+            resetAuto();
+        }
+        if (e.key === 'ArrowRight') {
+            track.scrollBy({ left: pageScroll(), behavior: 'smooth' });
+            resetAuto();
+        }
     });
 
     // Opcional: snap al item más cercano después de scroll
@@ -1195,7 +1302,17 @@ function initAlliancesCarousel() {
                 const dist = Math.abs(it.getBoundingClientRect().left - left);
                 if (dist < bestDist) { bestDist = dist; best = it; }
             });
-            if (best) best.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+            // Alineamos sólo en el eje horizontal (evita cualquier ajuste vertical del viewport)
+            if (best) {
+                try {
+                    // calcular la posición absoluta dentro del track y desplazar horizontalmente
+                    const left = best.offsetLeft;
+                    track.scrollTo({ left, behavior: 'smooth' });
+                } catch (e) {
+                    // fallback a scrollIntoView si algo falla (con block: 'nearest' para minimizar salto)
+                    try { best.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' }); } catch (_) { /* ignore */ }
+                }
+            }
         }, 120);
     }, { passive: true });
 }
