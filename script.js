@@ -646,15 +646,22 @@ function renderCapsules(capsules) {
                 <div class="capsula-meta">
                     <span class="capsula-duration">⏱ ${capsule.duration_minutes} min</span>
                     ${isVideo ?
-                    `<button class="btn btn-primary btn-small play-video-btn" 
+                        `<div class="capsula-actions">
+                            <button class="btn btn-primary btn-small play-video-btn" 
                                     data-video-url="${capsule.public_url}"
-                                    data-thumbnail-url="${capsule.thumbnail_url || ''}">
+                                    data-thumbnail-url="${capsule.thumbnail_url || ''}"
+                                    data-capsule-id="${capsule.id || encodeURIComponent(capsule.title)}">
                                 Reproducir Video
-                             </button>` :
-                `<a href="${capsule.public_url || '#'}" class="btn btn-primary btn-small" target="_blank">
-                            Ver/Descargar
-                         </a>`
-            }
+                            </button>
+                            <button class="icon-btn comments-btn" aria-label="Abrir comentarios" data-capsule-id="${capsule.id || encodeURIComponent(capsule.title)}">
+                                <i class="fas fa-comment" aria-hidden="true"></i>
+                                <span class="comment-count" data-capsule-id="${capsule.id || encodeURIComponent(capsule.title)}"></span>
+                            </button>
+                        </div>` :
+                    `<a href="${capsule.public_url || '#'}" class="btn btn-primary btn-small" target="_blank">
+                                Ver/Descargar
+                             </a>`
+                }
                 </div>
             </div>
         </div>
@@ -668,8 +675,36 @@ function renderCapsules(capsules) {
             const thumbnail = this.getAttribute('data-thumbnail-url') || '';
             const card = this.closest('.capsula-card');
             const title = card?.querySelector('.capsula-title')?.textContent || '';
-            openVideoModal({ videoUrl, thumbnailUrl: thumbnail, title });
+            const capsuleId = this.getAttribute('data-capsule-id');
+            openVideoModal({ videoUrl, thumbnailUrl: thumbnail, title, capsuleId });
         });
+    });
+
+    // Abrir comentarios directamente desde el card
+    document.querySelectorAll('.comments-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const capsuleId = this.getAttribute('data-capsule-id');
+            const card = this.closest('.capsula-card');
+            const title = card?.querySelector('.capsula-title')?.textContent || '';
+            // Abrir modal con video si existe URL, o con comentarios únicamente
+            const videoBtn = card.querySelector('.play-video-btn');
+            const videoUrl = videoBtn ? videoBtn.getAttribute('data-video-url') : null;
+            openVideoModal({ videoUrl, thumbnailUrl: '', title, capsuleId, openComments: true });
+        });
+    });
+
+    // Cargar conteo de comentarios por card (DB o fallback local)
+    document.querySelectorAll('.comment-count').forEach(async el => {
+        const id = el.getAttribute('data-capsule-id');
+        if (!id) return;
+        try {
+            const list = (typeof dbGetComments === 'function') ? await dbGetComments(id) : _getCommentsLocal(id);
+            const count = list ? (list.length || 0) : 0;
+            el.textContent = count > 0 ? String(count) : '';
+        } catch (e) {
+            const count = (_getCommentsLocal(id) || []).length || 0;
+            el.textContent = count > 0 ? String(count) : '';
+        }
     });
 
     // Aplicar animaciones
@@ -679,20 +714,163 @@ function renderCapsules(capsules) {
 }
 
 // Función para abrir modal de video
-function openVideoModal({ videoUrl, thumbnailUrl = '', title = '' } = {}) {
-    if (!videoUrl) return;
+// Helpers para likes y comentarios en localStorage
+function _likesKey(id) { return `likes_${id}`; }
+function _likedByUserKey(id) { return `liked_${id}`; }
+
+// FALLBACK localStorage helpers (kept for offline/permission fallback)
+function _getLikesLocal(id) { return parseInt(localStorage.getItem(_likesKey(id)) || '0', 10); }
+function _isLikedByUserLocal(id) { return localStorage.getItem(_likedByUserKey(id)) === '1'; }
+function _toggleLikeLocal(id) {
+    const liked = _isLikedByUserLocal(id);
+    let count = _getLikesLocal(id);
+    if (liked) {
+        count = Math.max(0, count - 1);
+        localStorage.setItem(_likesKey(id), String(count));
+        localStorage.setItem(_likedByUserKey(id), '0');
+    } else {
+        count = count + 1;
+        localStorage.setItem(_likesKey(id), String(count));
+        localStorage.setItem(_likedByUserKey(id), '1');
+    }
+    return { count, liked: !liked };
+}
+
+// DB-backed likes (Supabase). Tables assumed: `capsule_likes` with columns
+// id, capsule_id (text), user_id (uuid), created_at
+async function dbGetLikesCount(id) {
+    try {
+        if (typeof supabase === 'undefined' || !supabase) throw new Error('No supabase');
+        const { data, error, count } = await supabase
+            .from('capsule_likes')
+            .select('id', { count: 'exact' })
+            .eq('capsule_id', String(id));
+        if (error) throw error;
+        return (count || (data && data.length) || 0);
+    } catch (e) {
+        return _getLikesLocal(id);
+    }
+}
+
+async function dbIsLikedByUser(id) {
+    try {
+        if (!currentUser || !currentUser.id) return _isLikedByUserLocal(id);
+        if (typeof supabase === 'undefined' || !supabase) throw new Error('No supabase');
+        const { data, error } = await supabase
+            .from('capsule_likes')
+            .select('id')
+            .eq('capsule_id', String(id))
+            .eq('user_id', currentUser.id)
+            .limit(1)
+            .maybeSingle();
+        if (error) throw error;
+        return !!data;
+    } catch (e) {
+        return _isLikedByUserLocal(id);
+    }
+}
+
+// Toggle like on DB: if a like by this user exists, remove it (unlike), otherwise insert.
+async function dbToggleLike(id) {
+    try {
+        if (!currentUser || !currentUser.id) throw new Error('No user');
+        if (typeof supabase === 'undefined' || !supabase) throw new Error('No supabase');
+
+        // check existing
+        const { data: existing, error: selErr } = await supabase
+            .from('capsule_likes')
+            .select('id')
+            .eq('capsule_id', String(id))
+            .eq('user_id', currentUser.id)
+            .limit(1)
+            .maybeSingle();
+        if (selErr) throw selErr;
+
+        if (existing && existing.id) {
+            // unlike
+            const { error: delErr } = await supabase.from('capsule_likes').delete().eq('id', existing.id);
+            if (delErr) throw delErr;
+        } else {
+            const payload = { capsule_id: String(id), user_id: currentUser.id, created_at: new Date().toISOString() };
+            const { error: insErr } = await supabase.from('capsule_likes').insert([payload]);
+            if (insErr) throw insErr;
+        }
+
+        // return updated count
+        return await dbGetLikesCount(id);
+    } catch (e) {
+        // fallback to local
+        const res = _toggleLikeLocal(id);
+        return res.count;
+    }
+}
+
+function _commentsKey(id) { return `comments_${id}`; }
+function _getCommentsLocal(id) { try { return JSON.parse(localStorage.getItem(_commentsKey(id)) || '[]'); } catch (e) { return []; } }
+function _addCommentLocal(id, comment) {
+    const list = _getCommentsLocal(id);
+    list.push(Object.assign({ created_at: new Date().toISOString() }, comment));
+    localStorage.setItem(_commentsKey(id), JSON.stringify(list));
+    return list;
+}
+
+// DB-backed comments. Table assumed: `capsule_comments` with columns
+// id, capsule_id, user_id (nullable), author, text, created_at
+async function dbGetComments(id) {
+    try {
+        if (typeof supabase === 'undefined' || !supabase) throw new Error('No supabase');
+        const { data, error } = await supabase.from('capsule_comments')
+            .select('id, capsule_id, user_id, author, text, created_at')
+            .eq('capsule_id', String(id))
+            .order('created_at', { ascending: true });
+        if (error) throw error;
+        return data || [];
+    } catch (e) {
+        return _getCommentsLocal(id);
+    }
+}
+
+async function dbAddComment(id, payload) {
+    try {
+        if (typeof supabase === 'undefined' || !supabase) throw new Error('No supabase');
+        const body = Object.assign({ capsule_id: String(id), created_at: new Date().toISOString() }, payload);
+        if (currentUser && currentUser.id) body.user_id = currentUser.id;
+        const { data, error } = await supabase.from('capsule_comments').insert([body]);
+        if (error) throw error;
+        // return fresh list
+        return await dbGetComments(id);
+    } catch (e) {
+        return _addCommentLocal(id, payload);
+    }
+}
+
+async function openVideoModal({ videoUrl, thumbnailUrl = '', title = '', capsuleId = null, openComments = false } = {}) {
+    // allow opening comments-only (no videoUrl)
+    // if no videoUrl and no capsuleId, nothing to show
+    if (!videoUrl && !capsuleId) return;
 
     // Crear modal accesible y mejorado para video
     const videoModal = document.createElement('div');
     videoModal.className = 'modal active modal-video';
     videoModal.setAttribute('role', 'dialog');
     videoModal.setAttribute('aria-modal', 'true');
+    // Construir contenido del modal con sección de likes y comentarios
+    // Inicializamos con valores por defecto; el estado real (conteo y liked) se carga
+    // asíncronamente más abajo (dbGetLikesCount / dbIsLikedByUser).
+    const likesCount = 0;
+    const likedClass = '';
+
     videoModal.innerHTML = `
         <div class="modal-content" style="max-width: 900px;">
             <button class="modal-close" aria-label="Cerrar modal">×</button>
-            <div class="video-meta" style="margin-bottom:0.75rem;">
+            <div class="video-meta" style="display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:0.75rem;">
                 <strong class="video-title">${title || ''}</strong>
+                <div class="video-actions" style="display:flex; gap:0.5rem; align-items:center;">
+                    <button class="btn btn-outline btn-small like-btn ${likedClass}" data-capsule-id="${capsuleId || ''}">❤ <span class="like-count">${likesCount}</span></button>
+                    <button class="btn btn-outline btn-small toggle-comments-btn">Comentarios</button>
+                </div>
             </div>
+            ${videoUrl ? `
             <div class="video-container">
                 <div class="video-spinner" aria-hidden="true"></div>
                 <video class="player" controls preload="metadata" playsinline style="width:100%; height:auto; display:block; background:#000; border-radius:8px;">
@@ -702,6 +880,17 @@ function openVideoModal({ videoUrl, thumbnailUrl = '', title = '' } = {}) {
             </div>
             <div style="text-align: center; margin-top: 1rem;">
                 <a href="${videoUrl}" class="btn btn-outline" download>Descargar Video</a>
+            </div>
+            ` : ''}
+
+            <div class="comments-section" style="margin-top:1rem; display: ${openComments ? 'block' : 'none'};">
+                <h4>Comentarios</h4>
+                <div class="comments-list" style="max-height:240px; overflow:auto; margin-bottom:0.5rem;"></div>
+                <form class="comment-form" style="display:flex; gap:0.5rem; align-items:flex-start;">
+                    <input name="author" placeholder="Tu nombre (opcional)" style="flex:0 0 180px; padding:0.5rem; border-radius:6px; border:1px solid var(--border-color);">
+                    <textarea name="text" rows="2" placeholder="Escribe un comentario..." style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid var(--border-color);"></textarea>
+                    <button type="submit" class="btn btn-primary btn-small">Enviar</button>
+                </form>
             </div>
         </div>
     `;
@@ -724,33 +913,39 @@ function openVideoModal({ videoUrl, thumbnailUrl = '', title = '' } = {}) {
     const player = videoModal.querySelector('.player');
     const spinner = videoModal.querySelector('.video-spinner');
 
-    // Apply poster if provided
-    if (thumbnailUrl) player.setAttribute('poster', thumbnailUrl);
+    // Si hay player, configurar poster y eventos; si no (comentarios-only), omitir.
+    let onCanPlay, onWaiting, onPlaying;
+    if (player) {
+        // Apply poster if provided
+        if (thumbnailUrl) player.setAttribute('poster', thumbnailUrl);
 
-    // Autoplay on user gesture
-    player.play().catch(()=>{});
-
-    // Show spinner until canplay
-    const onCanPlay = () => {
-        spinner.style.display = 'none';
-        player.classList.add('ready');
+        // Autoplay on user gesture
         player.play().catch(()=>{});
-    };
 
-    const onWaiting = () => { spinner.style.display = 'block'; };
-    const onPlaying = () => { spinner.style.display = 'none'; };
+        // Show spinner until canplay
+        onCanPlay = () => {
+            if (spinner) spinner.style.display = 'none';
+            player.classList.add('ready');
+            player.play().catch(()=>{});
+        };
 
-    player.addEventListener('canplay', onCanPlay);
-    player.addEventListener('playing', onPlaying);
-    player.addEventListener('waiting', onWaiting);
+        onWaiting = () => { if (spinner) spinner.style.display = 'block'; };
+        onPlaying = () => { if (spinner) spinner.style.display = 'none'; };
+
+        player.addEventListener('canplay', onCanPlay);
+        player.addEventListener('playing', onPlaying);
+        player.addEventListener('waiting', onWaiting);
+    }
 
     // Close handlers
     function closeModal() {
         // remove listeners
-        player.pause();
-        player.removeEventListener('canplay', onCanPlay);
-        player.removeEventListener('playing', onPlaying);
-        player.removeEventListener('waiting', onWaiting);
+        if (player) {
+            try { player.pause(); } catch(e){}
+            if (onCanPlay) player.removeEventListener('canplay', onCanPlay);
+            if (onPlaying) player.removeEventListener('playing', onPlaying);
+            if (onWaiting) player.removeEventListener('waiting', onWaiting);
+        }
         document.removeEventListener('keydown', onKeyDown);
         videoModal.remove();
         document.body.style.overflow = previousOverflow;
@@ -785,6 +980,97 @@ function openVideoModal({ videoUrl, thumbnailUrl = '', title = '' } = {}) {
     }
 
     document.addEventListener('keydown', onKeyDown);
+
+    // Configurar likes y comentarios
+    const likeBtn = videoModal.querySelector('.like-btn');
+    const commentsSection = videoModal.querySelector('.comments-section');
+    const commentsList = videoModal.querySelector('.comments-list');
+    const commentForm = videoModal.querySelector('.comment-form');
+    const toggleCommentsBtn = videoModal.querySelector('.toggle-comments-btn');
+
+    function escapeHTML(s){ return String(s || '').replace(/[&<>\"]?/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]) || ''); }
+
+    // Renderizar comentarios actuales (consulta DB si es posible)
+    async function renderComments() {
+        if (!commentsList || !capsuleId) return;
+        const list = await (typeof dbGetComments === 'function' ? dbGetComments(capsuleId) : Promise.resolve(_getCommentsLocal(capsuleId)));
+        if (!list || list.length === 0) {
+            commentsList.innerHTML = '<div class="muted">Sin comentarios aún</div>';
+            return;
+        }
+        commentsList.innerHTML = list.map(c => `
+            <div class="comment-item" style="padding:0.5rem 0; border-bottom:1px solid var(--border-color);">
+                <strong style="display:block; font-size:0.95rem;">${escapeHTML(c.author || 'Anónimo')}</strong>
+                <div style="font-size:0.95rem; color:var(--text-light);">${escapeHTML(c.text)}</div>
+                <small style="color:var(--text-lighter); font-size:0.75rem;">${new Date(c.created_at).toLocaleString()}</small>
+            </div>
+        `).join('');
+    }
+
+    if (likeBtn && capsuleId) {
+        likeBtn.addEventListener('click', async () => {
+            try {
+                // Prefer DB toggle when possible
+                const newCount = (typeof dbToggleLike === 'function') ? await dbToggleLike(capsuleId) : (function(){ const r=_toggleLikeLocal(capsuleId); return r.count; })();
+                const span = likeBtn.querySelector('.like-count');
+                if (span) span.textContent = newCount;
+                const liked = (typeof dbIsLikedByUser === 'function') ? await dbIsLikedByUser(capsuleId) : _isLikedByUserLocal(capsuleId);
+                if (liked) likeBtn.classList.add('liked'); else likeBtn.classList.remove('liked');
+            } catch (e) {
+                console.error('Error toggling like:', e);
+            }
+        });
+    }
+
+    if (toggleCommentsBtn && commentsSection) {
+        toggleCommentsBtn.addEventListener('click', async () => {
+            const visible = commentsSection.style.display === 'block';
+            commentsSection.style.display = visible ? 'none' : 'block';
+            if (!visible) await renderComments();
+        });
+    }
+
+    if (commentForm && capsuleId) {
+        commentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const author = (form.querySelector('input[name="author"]').value || '').trim();
+            const text = (form.querySelector('textarea[name="text"]').value || '').trim();
+            if (!text) return;
+            try {
+                if (typeof dbAddComment === 'function') {
+                    await dbAddComment(capsuleId, { author, text });
+                } else {
+                    _addCommentLocal(capsuleId, { author, text });
+                }
+                form.querySelector('textarea[name="text"]').value = '';
+                await renderComments();
+            } catch (err) {
+                console.error('Error adding comment:', err);
+            }
+        });
+    }
+
+    // Si se pidió abrir comentarios directamente, cargarlos
+    if (commentsSection && openComments && capsuleId) {
+        await renderComments();
+        commentsSection.style.display = 'block';
+    }
+
+    // Cargar estado inicial de likes (DB si posible)
+    (async () => {
+        if (!capsuleId) return;
+        try {
+            const count = (typeof dbGetLikesCount === 'function') ? await dbGetLikesCount(capsuleId) : _getLikesLocal(capsuleId);
+            const liked = (typeof dbIsLikedByUser === 'function') ? await dbIsLikedByUser(capsuleId) : _isLikedByUserLocal(capsuleId);
+            const span = likeBtn && likeBtn.querySelector('.like-count');
+            if (span) span.textContent = count;
+            if (liked && likeBtn) likeBtn.classList.add('liked');
+            if (!liked && likeBtn) likeBtn.classList.remove('liked');
+        } catch (e) {
+            console.warn('Could not load like state from DB, using local fallback', e);
+        }
+    })();
 
     // Focus inicial en botón cerrar
     closeBtn.focus();

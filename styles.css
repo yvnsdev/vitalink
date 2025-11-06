@@ -804,6 +804,101 @@ body {
 .capsula-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
+
+}
+
+/* Actions container inside capsule cards */
+.capsula-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Icon-only button used for comments */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.icon-btn i {
+  font-size: 0.95rem;
+  color: var(--primary-color);
+}
+
+.icon-btn:focus {
+  outline: 3px solid rgba(59,130,246,0.15);
+}
+
+/* Small badge showing comment count */
+.comment-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--accent-color);
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Improved icon styles */
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgba(15,23,42,0.06);
+  box-shadow: 0 2px 6px rgba(16,24,40,0.04);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.icon-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16,24,40,0.08);
+}
+
+.icon-btn i {
+  color: var(--primary-color);
+  font-size: 1.05rem;
+}
+
+.icon-btn.liked {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-color: rgba(0,0,0,0.06);
+}
+
+.icon-btn.liked i {
+  color: #fff;
+}
+
+.icon-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.12);
+}
+
+/* Hide small badge when empty string (no comments) */
+.comment-count:empty { display: none; }
+
+@media (max-width: 640px) {
+  .icon-btn { width: 40px; height: 40px; }
+  .comment-count { top: -5px; right: -5px; font-size:0.6rem; }
 }
 
 .capsula-image {
