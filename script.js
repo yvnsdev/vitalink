@@ -22,8 +22,36 @@ document.addEventListener('DOMContentLoaded', async function () {
     initScrollEffects();
     initAlliancesCarousel();
     initHeroCarousel();
+    initInstagramWindow();
     // initHeroNetwork removed - particles disabled for performance
 });
+
+// Inicializar sección Instagram (ventana de posts)
+function initInstagramWindow() {
+    const grid = document.getElementById('instagram-grid');
+    if (!grid) return;
+
+    // If the official Instagram embed script is present, try to process any embeds.
+    // Our current implementation shows clickable thumbnails as a reliable baseline.
+    if (window.instgrm && window.instgrm.Embeds && typeof window.instgrm.Embeds.process === 'function') {
+        try {
+            window.instgrm.Embeds.process();
+        } catch (e) {
+            // ignore embed errors — thumbnails still work as links
+            console.warn('Instagram embed processing failed', e);
+        }
+    } else {
+        // If embed.js is not loaded yet but we might have permalinks later, dynamically insert script once.
+        const scriptAlready = document.querySelector('script[src*="instagram.com/embed.js"]');
+        if (!scriptAlready) {
+            const s = document.createElement('script');
+            s.async = true;
+            s.defer = true;
+            s.src = 'https://www.instagram.com/embed.js';
+            document.body.appendChild(s);
+        }
+    }
+}
 
 // Inicializar carrusel del hero (fondo)
 function initHeroCarousel() {

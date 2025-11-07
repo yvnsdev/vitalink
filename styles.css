@@ -1160,6 +1160,56 @@ body {
   border: 0;
 }
 
+/* Instagram window styles */
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+.ig-card {
+  display: block;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-light);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ig-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+.ig-thumb {
+  width: 100%;
+  padding-top: 75%; /* 4:3 aspect */
+  background-size: cover;
+  background-position: center;
+}
+
+.ig-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--border-light);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), white);
+}
+
+.ig-meta i { color: var(--primary-color); font-size: 1rem; }
+.ig-meta span { font-weight: 700; color: var(--text-color); }
+
+@media (min-width: 640px) {
+  .instagram-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+}
+
+@media (min-width: 1024px) {
+  .instagram-grid { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+}
+
 .contact-info h3 {
   font-size: 1.75rem;
   margin-bottom: 1rem;
