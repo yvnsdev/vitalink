@@ -11,6 +11,47 @@ let currentUser = null;
 let capsulesData = [];
 let categoriesCache = [];
 
+// Funciones para el indicador global de carga
+function showResourceLoader(message = 'Cargando recursos...') {
+    try {
+        let el = document.getElementById('resource-loader');
+        // Si no existe (por alguna razón), crear markup mínimo y añadirlo
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'resource-loader';
+            el.className = 'resource-loader';
+            el.setAttribute('role', 'status');
+            el.setAttribute('aria-live', 'polite');
+            el.innerHTML = `
+                <div class="resource-backdrop" aria-hidden="true"></div>
+                <div class="resource-box" role="dialog" aria-modal="true" aria-label="Indicador de carga">
+                    <div class="resource-spinner" aria-hidden="true"></div>
+                    <div class="resource-message"></div>
+                </div>
+            `;
+            document.body.appendChild(el);
+        }
+        const msg = el.querySelector('.resource-message');
+        if (msg) msg.textContent = message;
+        el.setAttribute('aria-hidden', 'false');
+        el.classList.add('active');
+    } catch (e) {
+        console.warn('No se pudo mostrar loader:', e);
+    }
+}
+
+function hideResourceLoader() {
+    try {
+        const el = document.getElementById('resource-loader');
+        if (!el) return;
+        el.setAttribute('aria-hidden', 'true');
+        el.classList.remove('active');
+        // mantener elemento en DOM para poder reutilizarlo posteriormente
+    } catch (e) {
+        console.warn('No se pudo ocultar loader:', e);
+    }
+}
+
 // Inicialización cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', async function () {
     await initSupabase();
@@ -24,6 +65,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     initHeroCarousel();
     initInstagramWindow();
     // initHeroNetwork removed - particles disabled for performance
+    // Ocultar indicador global al terminar las inicializaciones principales
+    hideResourceLoader();
 });
 
 // Inicializar sección Instagram (ventana de posts)
