@@ -84,6 +84,44 @@ body {
   opacity: 1;
   visibility: visible;
 }
+
+/* Loader localizado dentro de un formulario (no full-screen) */
+.resource-loader.resource-loader--form {
+  position: absolute;
+  inset: 0; /* cubrir el contenedor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.9);
+  z-index: 1200;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: opacity 180ms ease, visibility 180ms ease, transform 180ms ease;
+  opacity: 0;
+  visibility: hidden;
+}
+.resource-loader.resource-loader--form.active {
+  opacity: 1;
+  visibility: visible;
+}
+.resource-loader.resource-loader--form .resource-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: transparent;
+  padding: 0.5rem 0.75rem;
+}
+.resource-loader.resource-loader--form .resource-spinner {
+  width: 34px;
+  height: 34px;
+  border-width: 4px;
+}
+.resource-loader.resource-loader--form .resource-message {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
 .resource-spinner {
   width: 56px;
   height: 56px;

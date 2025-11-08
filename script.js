@@ -12,8 +12,48 @@ let capsulesData = [];
 let categoriesCache = [];
 
 // Funciones para el indicador global de carga
-function showResourceLoader(message = 'Cargando recursos...') {
+function showResourceLoader(message = 'Cargando recursos...', options = {}) {
+    // options: { target: selectorString }
     try {
+        const targetSelector = options.target;
+
+        // Si se solicita un loader localizado dentro de un contenedor (ej. el formulario)
+        if (targetSelector) {
+            const container = document.querySelector(targetSelector);
+            if (!container) return; // nothing to attach to
+
+            // Asegurar que el contenedor pueda posicionar elementos absolutos
+            const computed = window.getComputedStyle(container);
+            if (computed.position === 'static' || !computed.position) {
+                container.style.position = 'relative';
+            }
+
+            // Evitar crear múltiples loaders dentro del mismo contenedor
+            let existing = container.querySelector('.resource-loader.resource-loader--form');
+            if (!existing) {
+                const el = document.createElement('div');
+                el.className = 'resource-loader resource-loader--form active';
+                el.setAttribute('role', 'status');
+                el.setAttribute('aria-live', 'polite');
+                el.setAttribute('data-loader-target', targetSelector);
+                el.innerHTML = `
+                    <div class="resource-box" role="dialog" aria-modal="true" aria-label="Indicador de carga">
+                        <div class="resource-spinner" aria-hidden="true"></div>
+                        <div class="resource-message">${message}</div>
+                    </div>
+                `;
+                container.appendChild(el);
+                return;
+            }
+
+            // Si ya existe, solo actualizar el mensaje y asegurarse visible
+            existing.classList.add('active');
+            const msg = existing.querySelector('.resource-message');
+            if (msg) msg.textContent = message;
+            return;
+        }
+
+        // Comportamiento por defecto: loader a pantalla completa (creado en body)
         let el = document.getElementById('resource-loader');
         // Si no existe (por alguna razón), crear markup mínimo y añadirlo
         if (!el) {
@@ -41,7 +81,20 @@ function showResourceLoader(message = 'Cargando recursos...') {
 }
 
 function hideResourceLoader() {
+    // Opcional: hideResourceLoader(targetSelector)
     try {
+        const targetSelector = arguments[0];
+        if (targetSelector) {
+            const container = document.querySelector(targetSelector);
+            if (!container) return;
+            const el = container.querySelector('.resource-loader.resource-loader--form');
+            if (!el) return;
+            el.classList.remove('active');
+            // eliminar del DOM para limpiar
+            el.remove();
+            return;
+        }
+
         const el = document.getElementById('resource-loader');
         if (!el) return;
         el.setAttribute('aria-hidden', 'true');
@@ -1337,6 +1390,8 @@ async function handleUpload(e) {
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Subiendo...';
     submitBtn.disabled = true;
+    // Mostrar loader específico para la acción de upload, posicionado sobre el formulario
+    try { showResourceLoader('Subiendo recurso...', { target: '#upload-form' }); } catch (e) { /* no bloquear si falla */ }
 
     try {
         // Crear slug para el nombre del archivo
@@ -1430,6 +1485,8 @@ async function handleUpload(e) {
         console.error('Error subiendo recurso:', error);
         showToast('Error al subir recurso: ' + error.message, 'error');
     } finally {
+    // Ocultar loader de upload si está visible (específico del formulario)
+    try { hideResourceLoader('#upload-form'); } catch (e) { /* ignore */ }
         // Restaurar botón
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
