@@ -385,6 +385,72 @@ body {
   width: 100%;
 }
 
+/* Dropdown en navbar */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+.dropdown-icon {
+  transition: transform 0.3s ease;
+}
+
+.nav-dropdown:hover .dropdown-icon,
+.nav-dropdown.active .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  z-index: 1000;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown.active .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-dropdown-menu li {
+  margin: 0;
+}
+
+.nav-dropdown-menu .nav-link {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  color: var(--text-color);
+  white-space: nowrap;
+}
+
+.nav-dropdown-menu .nav-link::after {
+  display: none;
+}
+
+.nav-dropdown-menu .nav-link:hover {
+  background: var(--bg-light);
+  color: var(--primary-color);
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -2596,6 +2662,44 @@ body {
     transform: translateX(0);
     opacity: 1;
     visibility: visible;
+  }
+
+  /* Dropdown en móvil */
+  .nav-dropdown {
+    width: 100%;
+  }
+
+  .nav-dropdown-toggle {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+  }
+
+  .nav-dropdown-menu {
+    position: static;
+    width: 100%;
+    margin-top: 0;
+    margin-left: 1rem;
+    box-shadow: none;
+    background: var(--bg-light);
+    border-radius: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+
+  .nav-dropdown.active .nav-dropdown-menu {
+    max-height: 300px;
+    padding: 0.5rem 0;
+  }
+
+  .nav-dropdown-menu .nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
   }
 
   .nav-toggle {

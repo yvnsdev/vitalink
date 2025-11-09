@@ -344,9 +344,23 @@ function initEventListeners() {
         });
     }
 
+    // Dropdown en móvil
+    document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const dropdown = toggle.closest('.nav-dropdown');
+            if (window.innerWidth <= 767) {
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
+
     // Cerrar menú móvil al hacer clic en un enlace
     document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', (e) => {
+            // Si es el toggle del dropdown, no cerrar el menú
+            if (link.classList.contains('nav-dropdown-toggle')) return;
+            
             navToggle.classList.remove('active');
             navMenu.classList.remove('active');
             document.body.style.overflow = '';

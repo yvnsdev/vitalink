@@ -37,13 +37,34 @@
                 <li><a href="#beneficios" class="nav-link">Beneficios</a></li>
                 <li><a href="#que-es" class="nav-link">Qué Somos</a></li>
                 <li><a href="#capsulas" class="nav-link">Recursos</a></li>
-                <li><a href="#instagram" class="nav-link">Instagram</a></li>
-                <li><a href="#equipo" class="nav-link">Equipo</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        Sobre Nosotros
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="dropdown-icon">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </a>
+                    <ul class="nav-dropdown-menu">
+                        <li><a href="#equipo" class="nav-link">Equipo</a></li>
+                        <li><a href="#respaldo" class="nav-link">Respaldo Académico</a></li>
+                        <li><a href="#impacto" class="nav-link">Impacto</a></li>
+                        <li><a href="#instagram" class="nav-link">Instagram</a></li>
+                    </ul>
+                </li>
                 <li><a href="#alianzas" class="nav-link">Alianzas</a></li>
-                <li><a href="#respaldo" class="nav-link">Respaldo</a></li>
-                <li><a href="#impacto" class="nav-link">Impacto</a></li>
-                <li><a href="#faq" class="nav-link">FAQ</a></li>
-                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        Comunidad
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="dropdown-icon">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </a>
+                    <ul class="nav-dropdown-menu">
+                        <li><a href="#faq" class="nav-link">Preguntas Frecuentes</a></li>
+                        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                        <li><a href="#boletin" class="nav-link">Boletín</a></li>
+                    </ul>
+                </li>
                 <li class="nav-auth">
                     <button id="auth-btn" class="btn btn-outline">Acceder</button>
                 </li>
@@ -672,7 +693,7 @@
         </div>
     </section>
 
-    <section id="faq" class="section">
+    <section id="faq" class="section bg-light">
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">¿Dudas?</span>
@@ -771,7 +792,7 @@
     </section>
 
     <!-- Sección Contacto -->
-    <section id="contacto" class="section bg-light">
+    <section id="contacto" class="section">
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Estamos para apoyar</span>
@@ -857,7 +878,7 @@
 
     <!-- Footer -->
     <!-- Sección Boletín -->
-    <section id="boletin" class="section">
+    <section id="boletin" class="section bg-light">
         <div class="container">
             <div class="newsletter-card">
                 <div class="newsletter-content">
