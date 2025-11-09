@@ -1593,6 +1593,158 @@ body {
   background-color: var(--bg-light);
 }
 
+/* Nuevas secciones: Impacto, Equipo y Boletín */
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.impact-card {
+  background: white;
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-align: center;
+  border: 1px solid var(--border-light);
+}
+.impact-metric {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.team-card {
+  background: white;
+  padding: 2.25rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  text-align: center;
+  border: 1px solid var(--border-light);
+}
+
+/* Asegurar contraste y visibilidad consistente */
+.team-card {
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  border: 1px solid rgba(15,23,42,0.06);
+  min-height: 140px;
+}
+
+/* Forzar visibilidad si alguna regla externa oculta elementos */
+.team-grid .team-card,
+.team-grid .team-avatar,
+.team-grid .team-avatar img {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.team-avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.25rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: #f4f6f8;
+  display: grid;
+  place-items: center;
+}
+.team-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.team-role { color: var(--text-light); font-size: 1rem; margin-top: 0.75rem; }
+
+/* Forzar que las tarjetas sean visibles aún si las imágenes faltan */
+.team-avatar { background-size: cover; background-position: center; }
+.team-card[hidden], .team-grid[hidden] { display: none !important; }
+
+/* Mejoras visuales para la sección Equipo */
+.team-grid { margin-top: 2rem; }
+.team-card h4 {
+  font-size: 1.125rem;
+  margin: 0.5rem 0 0.25rem;
+  color: var(--text-color);
+  font-weight: 700;
+}
+.team-card .team-role { color: var(--text-light); font-weight: 600; }
+.team-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+.team-avatar {
+  border: 3px solid rgba(59,130,246,0.08);
+}
+/* Si la imagen no carga, mostrar un placeholder circular con iniciales (si se añade texto dentro) */
+.team-avatar:empty {
+  background: linear-gradient(135deg, var(--bg-light), #eef2ff);
+}
+
+@media (min-width: 640px) {
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop: mostrar 3 columnas con tarjetas más grandes */
+  .team-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+  .team-card { padding: 3rem; min-height: 220px; }
+  .team-avatar { width: 160px; height: 160px; margin-bottom: 1.25rem; }
+  .team-card h4 { font-size: 1.5rem; }
+  .team-role { font-size: 1.05rem; }
+}
+
+@media (min-width: 1400px) {
+  /* En pantallas amplias, mantener 3 columnas pero aumentar el espacio horizontal */
+  .team-grid { grid-template-columns: repeat(3, 1fr); gap: 3rem; max-width: 1400px; }
+  .team-card { padding: 3.25rem; }
+  .team-avatar { width: 180px; height: 180px; }
+  .team-card h4 { font-size: 1.6rem; }
+}
+
+@media (min-width: 1800px) {
+  /* Muy grande: 4 columnas con tarjetas amplias */
+  .team-grid { grid-template-columns: repeat(4, 1fr); max-width: 1800px; }
+  .team-avatar { width: 200px; height: 200px; }
+}
+
+/* FORZAR 6 TARJETAS EN UNA FILA EN PANTALLAS AMPLIAS */
+@media (min-width: 1200px) {
+  .team-grid { grid-template-columns: repeat(6, 1fr) !important; gap: 1rem !important; max-width: none !important; }
+  .team-card { padding: 1.25rem !important; min-height: 160px !important; }
+  .team-avatar { width: 110px !important; height: 110px !important; margin-bottom: 0.75rem !important; }
+  .team-card h4 { font-size: 1.05rem !important; }
+  .team-role { font-size: 0.9rem !important; }
+}
+
+.newsletter-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-light);
+}
+.newsletter-content h3 { margin: 0 0 0.25rem; font-size: 1.5rem; }
+.newsletter-content p { margin: 0; color: var(--text-light); }
+.newsletter-form { display: flex; gap: 0.75rem; align-items: center; }
+.newsletter-form input[type="email"] { padding: 0.9rem 1rem; border-radius: var(--radius); border: 1px solid var(--border-color); min-width: 260px; }
+
+@media (max-width: 780px) {
+  .newsletter-card { flex-direction: column; align-items: stretch; }
+  .newsletter-form { width: 100%; }
+  .newsletter-form input[type="email"] { width: 100%; }
+}
+
 .auth-header {
   text-align: center;
   margin-bottom: 2rem;
