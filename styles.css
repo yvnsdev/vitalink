@@ -1609,6 +1609,112 @@ body {
   text-align: center;
   border: 1px solid var(--border-light);
 }
+/* Noticias */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.news-card {
+  background: white;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+}
+.news-thumb {
+  width: 100%;
+  padding-top: 50%; /* 2:1 aspect */
+  background-size: cover;
+  background-position: center;
+}
+.news-body {
+  padding: 1rem 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.news-body h3 { margin: 0; font-size: 1.05rem; color: var(--text-color); }
+.news-excerpt { color: var(--text-light); margin: 0.25rem 0 0.5rem; }
+.news-meta { font-size: 0.875rem; color: var(--text-lighter); margin-top: auto; }
+.news-open { align-self: flex-start; margin-top: 0.5rem; }
+
+/* Modal específico (pequeños ajustes para contenido de noticias) */
+.news-modal-body .news-modal-thumb { border-radius: var(--radius-md); }
+.news-modal-title { margin-top: 0; }
+.news-modal-content { margin-top: 0.5rem; color: var(--text-color); line-height: 1.6; }
+
+/* ----------------------------
+   Restore override for Impacto / Equipo / Boletín / Noticias
+   En caso de que reglas posteriores o herramientas hayan sobreescrito
+   estos estilos, aplicamos reglas concisas con prioridad para
+   recuperar la apariencia esperada. Revisar y eliminar !important
+   una vez validado visualmente.
+   ---------------------------- */
+.section#impacto,
+.section#noticias,
+.section#boletin {
+  display: block !important;
+  padding: 4rem 0 !important;
+  background: transparent !important;
+  color: var(--text-color) !important;
+}
+
+.impact-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 1.5rem !important;
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+}
+.impact-card {
+  display: block !important;
+  background: white !important;
+  padding: 1.5rem !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow) !important;
+  border: 1px solid var(--border-light) !important;
+  text-align: center !important;
+}
+
+.newsletter-card {
+  display: flex !important;
+  gap: 1rem !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 1.25rem !important;
+  background: white !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+.news-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: 1rem !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+.news-card {
+  display: flex !important;
+  flex-direction: column !important;
+  background: white !important;
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important;
+  box-shadow: var(--shadow) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+.team-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 1.25rem !important; max-width: 1200px !important; margin: 0 auto !important; }
+.team-card { display: block !important; padding: 1.25rem !important; background: linear-gradient(180deg, #ffffff, #fbfdff) !important; border: 1px solid rgba(15,23,42,0.06) !important; box-shadow: var(--shadow) !important; }
+
 .impact-metric {
   font-size: 2rem;
   font-weight: 800;

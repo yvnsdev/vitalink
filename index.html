@@ -506,6 +506,62 @@
         </div>
     </section>
 
+    <!-- Sección Noticias -->
+    <section id="noticias" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Noticias</span>
+                <h2 class="section-title">Últimas publicaciones</h2>
+                <p class="section-description">Novedades, anuncios y artículos breves para profesionales en terreno.</p>
+            </div>
+
+            <div class="news-grid">
+                <article class="news-card" data-title="Lanzamiento de nueva cápsula" data-date="2025-10-20" data-image="assets/news1.jpg" data-content="Hemos publicado una nueva cápsula sobre manejo de emergencias en zonas rurales. Contiene guías y checklists descargables.">
+                    <div class="news-thumb" style="background-image: url('assets/news1.jpg')" aria-hidden="true"></div>
+                    <div class="news-body">
+                        <h3>Lanzamiento de nueva cápsula</h3>
+                        <p class="news-excerpt">Guía práctica y checklists para manejar emergencias en contextos rurales.</p>
+                        <div class="news-meta">20 Oct 2025</div>
+                        <button class="btn btn-link news-open" type="button">Ver más</button>
+                    </div>
+                </article>
+
+                <article class="news-card" data-title="Encuentro regional de capacitación" data-date="2025-09-12" data-image="assets/news2.jpg" data-content="Realizamos un encuentro regional con equipos locales para validar materiales y compartir experiencias de implementación.">
+                    <div class="news-thumb" style="background-image: url('assets/news2.jpg')" aria-hidden="true"></div>
+                    <div class="news-body">
+                        <h3>Encuentro regional de capacitación</h3>
+                        <p class="news-excerpt">Compartimos aprendizajes y adaptaciones locales para nuestras cápsulas.</p>
+                        <div class="news-meta">12 Sep 2025</div>
+                        <button class="btn btn-link news-open" type="button">Ver más</button>
+                    </div>
+                </article>
+
+                <article class="news-card" data-title="Alianza con organismo X" data-date="2025-08-01" data-image="assets/news3.jpg" data-content="Anunciamos una alianza estratégica con el organismo X para ampliar la cobertura de formación en zonas aisladas.">
+                    <div class="news-thumb" style="background-image: url('assets/news3.jpg')" aria-hidden="true"></div>
+                    <div class="news-body">
+                        <h3>Alianza con organismo X</h3>
+                        <p class="news-excerpt">Nueva colaboración para llevar formación práctica a más territorios.</p>
+                        <div class="news-meta">01 Ago 2025</div>
+                        <button class="btn btn-link news-open" type="button">Ver más</button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Noticias -->
+    <div id="news-modal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar modal">×</button>
+            <div class="news-modal-body">
+                <div class="news-modal-thumb" style="width:100%;height:200px;background-size:cover;background-position:center;margin-bottom:1rem;" aria-hidden="true"></div>
+                <h3 class="news-modal-title"></h3>
+                <div class="news-modal-meta" style="color:var(--text-light);margin-bottom:1rem;"></div>
+                <div class="news-modal-content"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Sección Alianzas -->
     <section id="alianzas" class="section">
         <div class="container">

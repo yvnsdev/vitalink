@@ -11,6 +11,128 @@ let currentUser = null;
 let capsulesData = [];
 let categoriesCache = [];
 
+// --- Debug helpers: overlay for logs and global error capture ---
+(function setupDebugHelpers() {
+    try {
+        // Create a simple debug overlay to show logs and uncaught errors in the page
+        const overlay = document.createElement('div');
+        overlay.id = 'debug-overlay';
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.style.position = 'fixed';
+        overlay.style.right = '12px';
+        overlay.style.bottom = '12px';
+        overlay.style.maxWidth = '380px';
+        overlay.style.zIndex = '99999';
+        overlay.style.fontSize = '13px';
+        overlay.style.fontFamily = 'monospace';
+        overlay.style.background = 'rgba(0,0,0,0.6)';
+        overlay.style.color = '#fff';
+        overlay.style.padding = '8px';
+        overlay.style.borderRadius = '8px';
+        overlay.style.maxHeight = '40vh';
+        overlay.style.overflow = 'auto';
+        overlay.style.boxShadow = '0 6px 18px rgba(0,0,0,0.4)';
+        overlay.style.display = 'none';
+
+        const title = document.createElement('div');
+        title.textContent = 'Debug';
+        title.style.fontWeight = '700';
+        title.style.marginBottom = '6px';
+        overlay.appendChild(title);
+
+        const list = document.createElement('div');
+        list.id = 'debug-list';
+        overlay.appendChild(list);
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Mostrar';
+        btn.style.position = 'absolute';
+        btn.style.left = '8px';
+        btn.style.top = '8px';
+        btn.style.fontSize = '12px';
+        btn.style.padding = '4px 6px';
+        btn.style.border = 'none';
+        btn.style.borderRadius = '6px';
+        btn.style.cursor = 'pointer';
+        btn.addEventListener('click', () => {
+            overlay.style.display = overlay.style.display === 'none' ? 'block' : 'none';
+            btn.textContent = overlay.style.display === 'none' ? 'Mostrar' : 'Ocultar';
+        });
+        // keep the button visible by appending to body later
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.appendChild(overlay);
+            document.body.appendChild(btn);
+        });
+
+        function appendDebug(type, msg) {
+            try {
+                const item = document.createElement('div');
+                item.style.marginBottom = '6px';
+                item.style.padding = '6px';
+                item.style.borderRadius = '6px';
+                item.style.background = type === 'error' ? 'rgba(255,50,50,0.12)' : 'rgba(255,255,255,0.04)';
+                item.style.color = type === 'error' ? '#fff' : '#fff';
+                item.textContent = `[${type}] ${msg}`;
+                const l = document.getElementById('debug-list');
+                if (l) l.prepend(item);
+            } catch (e) { console.warn('debug overlay append failed', e); }
+        }
+
+        // Wrap console methods so logs also go to the overlay
+        ['log','warn','error','info'].forEach(fn => {
+            const orig = console[fn] || function(){};
+            console[fn] = function() {
+                try { appendDebug(fn, Array.from(arguments).map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' ')); } catch(e){}
+                try { orig.apply(console, arguments); } catch (e) {}
+            };
+        });
+
+        window.addEventListener('error', function (ev) {
+            try {
+                appendDebug('error', ev.message + ' (' + (ev.filename || '') + ':' + (ev.lineno || '') + ')');
+                // make overlay visible for errors
+                overlay.style.display = 'block';
+            } catch (e) {}
+        });
+
+        window.addEventListener('unhandledrejection', function (ev) {
+            try {
+                appendDebug('error', 'UnhandledRejection: ' + (ev.reason && ev.reason.message ? ev.reason.message : String(ev.reason)));
+                overlay.style.display = 'block';
+            } catch (e) {}
+        });
+    } catch (e) { /* non-blocking */ }
+})();
+
+// Ensure the main stylesheet is loaded and not disabled/misconfigured
+(function ensureStylesheet() {
+    try {
+        function tryFix() {
+            const links = Array.from(document.querySelectorAll('link[rel~="stylesheet"]'));
+            let found = links.find(l => (l.getAttribute('href') || '').indexOf('styles.css') !== -1);
+            if (!found) {
+                // create and append
+                const l = document.createElement('link');
+                l.rel = 'stylesheet';
+                l.href = 'styles.css';
+                document.head.appendChild(l);
+                console.log('styles.css link reinjected');
+                return;
+            }
+            // ensure it's enabled
+            if (found.disabled) { found.disabled = false; console.log('styles.css was disabled, re-enabled'); }
+            if (found.media && found.media !== 'all') { found.media = 'all'; console.log('styles.css media reset to all'); }
+        }
+        // run on DOMContentLoaded to ensure head exists
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', tryFix);
+        } else {
+            tryFix();
+        }
+    } catch (e) { console.warn('ensureStylesheet failed', e); }
+})();
+
 // Funciones para el indicador global de carga
 function showResourceLoader(message = 'Cargando recursos...', options = {}) {
     // options: { target: selectorString }
@@ -252,6 +374,31 @@ function initEventListeners() {
                 closeAuthModal();
             }
         });
+    }
+
+    // Noticias: abrir modal con detalle
+    document.querySelectorAll('.news-open').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const card = e.currentTarget.closest('.news-card');
+            if (!card) return;
+            const data = {
+                title: card.dataset.title || card.querySelector('h3')?.textContent || '',
+                date: card.dataset.date || card.querySelector('.news-meta')?.textContent || '',
+                image: card.dataset.image || '',
+                content: card.dataset.content || card.querySelector('.news-excerpt')?.textContent || ''
+            };
+            openNewsModal(data);
+        });
+    });
+
+    // Modal de noticias: cerrar al hacer clic fuera
+    const newsModal = document.getElementById('news-modal');
+    if (newsModal) {
+        newsModal.addEventListener('click', (e) => {
+            if (e.target === newsModal) closeNewsModal();
+        });
+        const newsClose = newsModal.querySelector('.modal-close');
+        if (newsClose) newsClose.addEventListener('click', closeNewsModal);
     }
 
     // Tabs de autenticación
@@ -504,6 +651,32 @@ function closeAuthModal() {
         authModal.classList.remove('active');
         document.body.style.overflow = '';
     }
+}
+
+// Abrir modal de noticia
+function openNewsModal(data = {}) {
+    const modal = document.getElementById('news-modal');
+    if (!modal) return;
+    const thumb = modal.querySelector('.news-modal-thumb');
+    const title = modal.querySelector('.news-modal-title');
+    const meta = modal.querySelector('.news-modal-meta');
+    const content = modal.querySelector('.news-modal-content');
+
+    if (thumb && data.image) thumb.style.backgroundImage = `url('${data.image}')`;
+    if (title) title.textContent = data.title || '';
+    if (meta) meta.textContent = data.date || '';
+    if (content) content.textContent = data.content || '';
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Cerrar modal de noticia
+function closeNewsModal() {
+    const modal = document.getElementById('news-modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
 }
 
 // Cambiar entre tabs de autenticación
