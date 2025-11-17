@@ -1194,15 +1194,7 @@ async function openVideoModal({ videoUrl, thumbnailUrl = '', title = '', capsule
             </div>
             ` : ''}
 
-            <div class="comments-section" style="margin-top:1rem; display: ${openComments ? 'block' : 'none'};">
-                <h4>Comentarios</h4>
-                <div class="comments-list" style="max-height:240px; overflow:auto; margin-bottom:0.5rem;"></div>
-                <form class="comment-form" style="display:flex; gap:0.5rem; align-items:flex-start;">
-                    <input name="author" placeholder="Tu nombre (opcional)" style="flex:0 0 180px; padding:0.5rem; border-radius:6px; border:1px solid var(--border-color);">
-                    <textarea name="text" rows="2" placeholder="Escribe un comentario..." style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid var(--border-color);"></textarea>
-                    <button type="submit" class="btn btn-primary btn-small">Enviar</button>
-                </form>
-            </div>
+            <!-- Comentarios: ahora se muestran en un modal separado -->
         </div>
     `;
 
@@ -1276,16 +1268,22 @@ async function openVideoModal({ videoUrl, thumbnailUrl = '', title = '', capsule
             return;
         }
         if (e.key === ' ' || e.code === 'Space') {
+            // If focus is inside an input/textarea or a contenteditable element, allow typing spaces
+            const active = document.activeElement;
+            const tag = active && active.tagName ? active.tagName.toLowerCase() : null;
+            if (tag === 'input' || tag === 'textarea' || (active && active.isContentEditable)) {
+                return; // don't intercept - let the element handle the space
+            }
             e.preventDefault();
-            if (player.paused) player.play(); else player.pause();
+            if (player && player.paused) player.play(); else if (player) player.pause();
             return;
         }
         if (e.key === 'ArrowRight') {
-            player.currentTime = Math.min(player.duration || Infinity, player.currentTime + 5);
+            if (player) player.currentTime = Math.min(player.duration || Infinity, player.currentTime + 5);
             return;
         }
         if (e.key === 'ArrowLeft') {
-            player.currentTime = Math.max(0, player.currentTime - 5);
+            if (player) player.currentTime = Math.max(0, player.currentTime - 5);
             return;
         }
     }
@@ -1333,39 +1331,17 @@ async function openVideoModal({ videoUrl, thumbnailUrl = '', title = '', capsule
         });
     }
 
-    if (toggleCommentsBtn && commentsSection) {
-        toggleCommentsBtn.addEventListener('click', async () => {
-            const visible = commentsSection.style.display === 'block';
-            commentsSection.style.display = visible ? 'none' : 'block';
-            if (!visible) await renderComments();
+    // Abrir comentarios en un modal separado cuando el usuario haga clic
+    if (toggleCommentsBtn) {
+        toggleCommentsBtn.addEventListener('click', () => {
+            if (capsuleId) openCommentsModal(capsuleId, title);
+            else openCommentsModal(null, title);
         });
     }
 
-    if (commentForm && capsuleId) {
-        commentForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const form = e.target;
-            const author = (form.querySelector('input[name="author"]').value || '').trim();
-            const text = (form.querySelector('textarea[name="text"]').value || '').trim();
-            if (!text) return;
-            try {
-                if (typeof dbAddComment === 'function') {
-                    await dbAddComment(capsuleId, { author, text });
-                } else {
-                    _addCommentLocal(capsuleId, { author, text });
-                }
-                form.querySelector('textarea[name="text"]').value = '';
-                await renderComments();
-            } catch (err) {
-                console.error('Error adding comment:', err);
-            }
-        });
-    }
-
-    // Si se pidió abrir comentarios directamente, cargarlos
-    if (commentsSection && openComments && capsuleId) {
-        await renderComments();
-        commentsSection.style.display = 'block';
+    // Si se pidió abrir comentarios directamente, abrir el modal de comentarios separado
+    if (openComments && capsuleId) {
+        openCommentsModal(capsuleId, title);
     }
 
     // Cargar estado inicial de likes (DB si posible)
@@ -1386,6 +1362,97 @@ async function openVideoModal({ videoUrl, thumbnailUrl = '', title = '', capsule
     // Focus inicial en botón cerrar
     closeBtn.focus();
 }
+
+    // Modal separado para comentarios (fuera del modal de video)
+    async function openCommentsModal(capsuleId, title = '') {
+        const commentsModal = document.createElement('div');
+        commentsModal.className = 'modal active modal-comments';
+        commentsModal.setAttribute('role', 'dialog');
+        commentsModal.setAttribute('aria-modal', 'true');
+        commentsModal.innerHTML = `
+            <div class="modal-content" style="max-width:720px;">
+                <button class="modal-close" aria-label="Cerrar modal">×</button>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:0.5rem;">
+                    <strong>${title || 'Comentarios'}</strong>
+                    <small class="muted">${capsuleId ? ('ID: ' + capsuleId) : ''}</small>
+                </div>
+                <div class="comments-list" style="max-height:420px; overflow:auto; margin-bottom:0.75rem; border-top:1px solid var(--border-color); padding-top:0.5rem;"></div>
+                <form class="comment-form" style="display:flex; gap:0.5rem; align-items:flex-start;">
+                    <input name="author" placeholder="Tu nombre (opcional)" style="flex:0 0 180px; padding:0.5rem; border-radius:6px; border:1px solid var(--border-color);">
+                    <textarea name="text" rows="3" placeholder="Escribe un comentario..." style="flex:1; padding:0.5rem; border-radius:6px; border:1px solid var(--border-color);"></textarea>
+                    <button type="submit" class="btn btn-primary btn-small">Enviar</button>
+                </form>
+            </div>
+        `;
+
+        document.body.appendChild(commentsModal);
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+
+        const closeBtn = commentsModal.querySelector('.modal-close');
+        const commentsList = commentsModal.querySelector('.comments-list');
+        const commentForm = commentsModal.querySelector('.comment-form');
+
+        function closeComments() {
+            document.removeEventListener('keydown', onKey);
+            commentsModal.remove();
+            document.body.style.overflow = previousOverflow;
+        }
+
+        closeBtn.addEventListener('click', closeComments);
+        commentsModal.addEventListener('click', (e) => { if (e.target === commentsModal) closeComments(); });
+
+        function escapeHTML(s){ return String(s || '').replace(/[&<>"]?/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]) || ''); }
+
+        async function renderCommentsList() {
+            if (!commentsList) return;
+            const list = await (typeof dbGetComments === 'function' ? dbGetComments(capsuleId) : Promise.resolve(_getCommentsLocal(capsuleId)));
+            if (!list || list.length === 0) {
+                commentsList.innerHTML = '<div class="muted">Sin comentarios aún</div>';
+                return;
+            }
+            commentsList.innerHTML = list.map(c => `
+                <div class="comment-item" style="padding:0.5rem 0; border-bottom:1px solid var(--border-color);">
+                    <strong style="display:block; font-size:0.95rem;">${escapeHTML(c.author || 'Anónimo')}</strong>
+                    <div style="font-size:0.95rem; color:var(--text-light);">${escapeHTML(c.text)}</div>
+                    <small style="color:var(--text-lighter); font-size:0.75rem;">${new Date(c.created_at).toLocaleString()}</small>
+                </div>
+            `).join('');
+        }
+
+        if (commentForm) {
+            commentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const form = e.target;
+                const author = (form.querySelector('input[name="author"]').value || '').trim();
+                const text = (form.querySelector('textarea[name="text"]').value || '').trim();
+                if (!text) return;
+                try {
+                    if (typeof dbAddComment === 'function' && capsuleId) {
+                        await dbAddComment(capsuleId, { author, text });
+                    } else if (capsuleId) {
+                        _addCommentLocal(capsuleId, { author, text });
+                    }
+                    form.querySelector('textarea[name="text"]').value = '';
+                    await renderCommentsList();
+                } catch (err) {
+                    console.error('Error adding comment (modal):', err);
+                }
+            });
+        }
+
+        async function init() {
+            await renderCommentsList();
+            closeBtn.focus();
+        }
+
+        function onKey(e) {
+            if (e.key === 'Escape') closeComments();
+        }
+
+        document.addEventListener('keydown', onKey);
+        init().catch(err => console.error('Error initializing comments modal:', err));
+    }
 
 // Obtener icono por categoría
 function getCategoryIcon(category) {

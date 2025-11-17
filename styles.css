@@ -1652,6 +1652,8 @@ body {
   justify-content: center;
   border-radius: 50%;
   transition: var(--transition);
+  /* Asegurar que el botón cerrar quede por encima de acciones internas (like/comments) */
+  z-index: 3000;
 }
 
 .modal-close:hover {
@@ -2243,6 +2245,12 @@ body {
 
 .modal-video .video-container { position: relative; }
 .modal-video .player { width: 100%; height: auto; max-height: 80vh; display: block; }
+
+/* Evitar que las acciones del video (like / comments) se superpongan al botón cerrar
+   Empujamos levemente las acciones hacia la izquierda para dejar espacio al control de cierre. */
+.modal-video .video-actions {
+  margin-right: 3.25rem; /* deja espacio suficiente para el botón cerrar */
+}
 
 /* Botón de reproducir video */
 .play-video-btn {
