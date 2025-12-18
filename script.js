@@ -1,4 +1,3 @@
-// CONFIGURACIÓN SUPABASE - REEMPLAZAR CON TUS PROPIAS CREDENCIALES
 const SUPABASE_URL = 'https://mogtzwibejrrlpwdghop.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vZ3R6d2liZWpycmxwd2RnaG9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMTY5MjMsImV4cCI6MjA3NDY5MjkyM30.bfI6lV2ON6RSM8sPybC25dup-oYDfpLVcsDVEP2nObw';
 
@@ -6,7 +5,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const ADMIN_EMAILS = ["tomas.yevenesc@gmail.com"];
 
 // Variables globales
-let supabase;
+var supabase;
 let currentUser = null;
 let capsulesData = [];
 let categoriesCache = [];

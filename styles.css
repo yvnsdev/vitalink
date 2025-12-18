@@ -1968,6 +1968,96 @@ body {
   .newsletter-form input[type="email"] { width: 100%; }
 }
 
+/* Mobile-first improvements: mejorar experiencia en teléfonos (táctil, legibilidad, modales) */
+@media (max-width: 640px) {
+  /* Modales: ocupar más espacio disponible, reducir padding y bordes para maximizar vista */
+  .modal {
+    align-items: flex-start;
+    padding: 0.5rem;
+  }
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-sizing: border-box;
+    max-height: calc(100vh - 2rem);
+  }
+  /* Para modales de video y comentarios, usar casi pantalla completa */
+  .modal-video .modal-content,
+  .modal-comments .modal-content,
+  .news-modal .modal-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem;
+    margin: 0;
+    border-radius: 0;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  /* Hacer que la X de cerrar sea más grande y con mejor objetivo táctil */
+  .modal-close {
+    width: 44px;
+    height: 44px;
+    font-size: 1.15rem;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  /* Aumentar tamaño de botones para tocar con el pulgar */
+  .btn, .btn-small, .icon-btn {
+    min-height: 44px;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* Formularios e inputs: ocupar ancho completo */
+  .comment-form input[name="author"],
+  .comment-form textarea,
+  .newsletter-form input[type="email"],
+  .auth-form input,
+  .auth-form button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Grid simple: 1 columna para noticias y equipo en móviles */
+  .news-grid { grid-template-columns: 1fr !important; gap: 0.7rem !important; }
+  .news-card { flex-direction: column !important; }
+
+  .team-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+  .team-card { padding: 1rem !important; }
+  .team-avatar { width: 96px !important; height: 96px !important; }
+
+  /* Video container: ajustar altura y hacer controles claramente separables */
+  .modal-video .player { max-height: 50vh; }
+  .modal-video .video-container { border-radius: 0.5rem; }
+
+  /* Empujar acciones lejos del borde para no cubrir la X */
+  .modal-video .video-actions { margin-right: 4.5rem; }
+
+  /* Hacer que la lista de comentarios sea más alta y scrollable */
+  .modal-comments .comments-list { max-height: calc(100vh - 220px); overflow:auto; }
+
+  /* Navbar: mejorar espacio y área táctil para enlaces */
+  .navbar .nav-links a,
+  .navbar .nav-links button {
+    padding: 0.75rem 0.9rem;
+    font-size: 0.95rem;
+    display: block;
+  }
+
+  /* Toasts: no tapar elementos en pantallas pequeñas */
+  .toast-container { top: 84px; left: 0; right: 0; justify-content: center; }
+  .toast { max-width: calc(100% - 2rem); }
+}
+
 .auth-header {
   text-align: center;
   margin-bottom: 2rem;
